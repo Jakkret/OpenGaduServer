@@ -7,7 +7,7 @@
 /*
  *	TODO: direct v3.1 and v5 clients to chat server
  *	Prioritize v5 since its more documented
- *
+ *	TODO: separate appsvc handlers for each ver
  *	State: Unknown (16.03.2026)
  */
 
