@@ -1,4 +1,4 @@
-This version as of now (17.03.2026) is still in development
+This version as of now (17.03.2026) is partially stable (register works!)
 
 If you want to soon work on the repository, please wait until
 the project will grow and won't be in the current structure 
