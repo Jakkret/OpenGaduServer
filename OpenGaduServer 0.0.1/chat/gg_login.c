@@ -66,7 +66,7 @@ static uint32_t generate_seed() {
     return ((uint32_t)rand() << 16) ^ (uint32_t)rand();
 }
 
-// GG32 hash algorithm
+// GG32 hash algorithm (change to original one - check libgadu/src/libgadu.c @ 209)
 uint32_t gg_login_hash_old(const unsigned char *password, uint32_t seed) {
     uint32_t hash = seed;
     while (*password) {
