@@ -27,6 +27,8 @@ void http_router(int client_sock, char *method, char *path, char *query) {
     } else if (strcmp(path, "/appsvc/fmregister2.asp") == 0) {
         handle_fmregister(client_sock, query, 5);
 
+	} else if (strcmp(path, "/appsvc/fmcontactsget.asp") == 0 || strcmp(path, "/appsvc/fmcontactsput.asp") == 0 ) {
+		http_send_response(client_sock, 200, "OK", "0\n");
 	} else {
         LOG_WARN("HTTP: Unknown path: %s", path);
         http_send_response(client_sock, 404, "Not Found",

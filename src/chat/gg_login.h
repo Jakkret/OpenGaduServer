@@ -16,7 +16,7 @@ typedef struct {
 } GG_PACKED GG_welcome;
 
 #define GG_LOGIN3 0x00000001 	// yes, it is GG_WELCOME / todo: reverse engineer the struct for v3
-#define GG_LOGIN 0x000c			// libgadu/include/libgadu.h.in @ 1888 - GG_LOGIN struct
+#define GG_LOGIN5 0x000c			// libgadu/include/libgadu.h.in @ 1888 - GG_LOGIN struct
 
 // Acording to wireshark, the client sends out 
 // a packet of this type, but its 12 bytes in length.
@@ -25,6 +25,15 @@ typedef struct {
 	uint32_t hash;
 	uint32_t status;
 } GG_PACKED GG_login3;
+
+typedef struct {
+	uint32_t uin;			/* mój numerek */
+	uint32_t hash;			/* hash hasła */
+	uint32_t status;		/* status na dzień dobry */
+	uint32_t version;		/* moja wersja klienta */
+	uint32_t local_ip;		/* mój adres ip */
+	uint16_t local_port;		/* port, na którym słucham */
+} GG_PACKED GG_login5;
 
 #define GG_LOGIN_FAILED 0x0009
 #define GG_LOGIN_OK 0x0003
@@ -36,4 +45,5 @@ uint32_t gg_login_hash_old(const unsigned char *password, uint32_t seed);	// pls
 void gg_send_login_failed(int sock);
 void gg_send_login_ok(int sock);
 void handle_logging(int sock);
+uint32_t generate_seed();
 #endif

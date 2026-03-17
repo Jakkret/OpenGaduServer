@@ -21,7 +21,7 @@ void handle_appsvc(int sock, char *query, int version) {
 			
 			char tmpver[64] = {0};	// buffer --- encoded
 			char clientVersion[64] = {0};		// here lies the decoded version string
-			char lastmsg[]= {0};
+			char lastmsg[64]= {0};
 			
 			get_param(query, "fmnumber", fmnumber, sizeof(fmnumber));
 			get_param(query, "version", tmpver, sizeof(tmpver));
@@ -51,6 +51,8 @@ void handle_appsvc(int sock, char *query, int version) {
 				fmnumber[0] ? fmnumber  : "?",
 				lastbanner[0] ? lastbanner : "?"
 			);
+			
+			break;
 		}
 		default:
 			LOG_WARN("APPSVC: Unknown version %d", version);
@@ -61,7 +63,7 @@ void handle_appsvc(int sock, char *query, int version) {
 
 
     char body[64];
-    snprintf(body, sizeof(body), "0 0 %s:%d %s\n", HOST, PORT_CHAT, FALLBACK_HOST);		// 0 0 127.0.0.1:8074 127.0.0.1
+    snprintf(body, sizeof(body), "0 0 %s %d %s\n", HOST, PORT_CHAT, HOST);		// 0 0 127.0.0.1:8074 127.0.0.1
 
     char response[256];
     snprintf(response, sizeof(response),
@@ -73,4 +75,6 @@ void handle_appsvc(int sock, char *query, int version) {
 
     send(sock, response, strlen(response), 0);
     LOG_OK("APPSVC: Sent chat server address to client %s", fmnumber[0] ? fmnumber : "?");
+	
+	
 }

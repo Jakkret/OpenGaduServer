@@ -5,9 +5,9 @@
 
 // ── Ports & host ──────────────────────────────────────────
 #define PORT_HTTP  80		// register
-#define PORT_CHAT  8074		// actual client/server logic
-#define HOST       "10.0.0.1"
-#define FALLBACK_HOST "10.0.0.1"
+#define PORT_CHAT  443		// actual client/server logic
+#define HOST       "192.168.137.1"
+#define FALLBACK_HOST "192.168.137.1"
 
 // ── Buffer sizes ──────────────────────────────────────────
 #define BUFOR_HTTP  4096
