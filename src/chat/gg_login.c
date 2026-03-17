@@ -46,7 +46,7 @@ void gg_send_login_ok(int sock){
 	header.length = 0;		// only header
 	
 	send(sock, (const char*)&header, sizeof(header), 0);
-	LOG_WARN("CHAT: Sent GG_LOGIN_FAILED");
+	LOG_OK("CHAT: Sent GG_LOGIN_OK");
 }
 
 // generate a random seed
@@ -81,7 +81,7 @@ unsigned int gg_login_hash(const unsigned char *password, uint32_t seed){
 
 // checks if credentials match with what client gave out on GG_LOGIN
 int verify_login(int sock, GG_login5 usr, uint32_t seed) {
-    /*User *searched = db_find_by_uin(usr.uin);
+    User *searched = db_find_by_uin(usr.uin);
     if (!searched || !searched->password[0]) {
         LOG_WARN("CHAT: UIN %u not found or empty password", usr.uin);
         return 0;
@@ -92,8 +92,8 @@ int verify_login(int sock, GG_login5 usr, uint32_t seed) {
 	
 	
 	
-	return (hash == usr.hash);*/
-	return 1;
+	return (hash == usr.hash);
+	//return 1;
 }
 
 // needs a real cleanup
@@ -116,9 +116,12 @@ void handle_logging(int sock) {
         LOG_OK("CHAT: Login OK for UIN %u", login.uin);
         gg_send_login_ok(sock);
 
-        // Keep connection open and watch what client sends next
-        unsigned char next[256] = {0};
-        GG_header next_header;
+		GG_header next_header;
+        while (recv(sock, (char*)&next_header, sizeof(next_header), 0) > 0) {
+        LOG_INFO("CHAT: Packet type=0x%08X length=%u", 
+                 next_header.type, next_header.length);
+		}
+        // TODO: support packets after logging (17.03.2026 @ 21:08)
         
     } else {
         LOG_WARN("CHAT: Login FAILED for UIN %u", login.uin);
