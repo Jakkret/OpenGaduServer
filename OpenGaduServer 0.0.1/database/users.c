@@ -11,7 +11,6 @@ static UserDatabase db;
 // -- Password hashing --------------------------
 // Simple djb2-based hash — good enough for local/dev use
 // TODO: replace with proper bcrypt or SHA-256 for production
-// TODO: implement the older hash type (e.g. v3.1) for passwords (check libgadu/common.c)
 
 static void hash_password(const char *password, char *out_hash) {
     unsigned long hash = 5381;
