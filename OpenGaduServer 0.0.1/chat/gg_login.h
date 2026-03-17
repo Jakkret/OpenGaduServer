@@ -13,11 +13,11 @@ typedef struct {
 
 
 typedef struct {
-	int seed;	// its a 32-bit random number
+	int seed;	// its a 32-bit random number / change to uint32_t
 } GG_PACKED GG_welcome;
 
 #define GG_LOGIN3 0x00000001 // yes, it is GG_WELCOME
-#define GG_LOGIN5 0x000c
+#define GG_LOGIN 0x000c		// struct: libgadu/include/libgadu.h.in @ 1888
 
 // Acording to wireshark, the client sends out 
 // a packet of this type, but its 12 bytes in length.
