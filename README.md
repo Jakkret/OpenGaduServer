@@ -1,2 +1,2 @@
-# Open-GG-server
+# OpenGaduServer
 Open Gadu-Gadu Server for older clients (&lt;6.0)
