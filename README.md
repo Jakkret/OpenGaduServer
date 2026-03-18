@@ -1,4 +1,7 @@
 # OpenGaduServer
+> [!WARNING]
+> This project is in its earliest stages.
+
 independent server compatible with Gadu-Gadu clients from 2000's for self-hosting use. The source code is written in C and relies on community documentation such as [libgadu](https://github.com/Jakkret/OpenGaduServer/blob/main/SOURCES.md#libgadu-by-wojtekka-and-libgadu-team1-)) (sources listed in [`SOURCES.md`](https://github.com/Jakkret/OpenGaduServer/blob/main/SOURCES.md)). For now the project is working on Windows (Linux support is in the way) and as of now focuses on supporting Gadu Gadu 5.x clients (check Support List)
 
 If you'd like to commit - just commit and i'll review the changes, More hands get the work done faster ;P (soon i will make contribute.md for that case)
