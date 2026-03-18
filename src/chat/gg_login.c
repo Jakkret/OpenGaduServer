@@ -10,7 +10,7 @@
  *	TODO: please clean up this mess
  *	Prioritize v5 since its more documented
  *
- *	State: Dosen't work (16.03.2026)
+ *	State: partially works - sends out GG_WELCOME and logs in (17.03.2026 @ 21:05)
  */
 
 void gg_send_welcome(int sock, uint32_t seed){
@@ -54,7 +54,7 @@ uint32_t generate_seed() {
     return ((uint32_t)rand() << 16) ^ (uint32_t)rand();
 }
 
-// GG32 hash algorithm (change to original one - check libgadu/src/libgadu.c @ 209)
+// GG32 hash algorithm (source: libgadu/src/libgadu.c @ 209)
 unsigned int gg_login_hash(const unsigned char *password, uint32_t seed){
 	unsigned int x, y, z;
 
@@ -79,7 +79,7 @@ unsigned int gg_login_hash(const unsigned char *password, uint32_t seed){
 }
 
 
-// checks if credentials match with what client gave out on GG_LOGIN
+// verifies the information by counting hash (code based off USG)
 int verify_login(int sock, GG_login5 usr, uint32_t seed) {
     User *searched = db_find_by_uin(usr.uin);
     if (!searched || !searched->password[0]) {
@@ -90,13 +90,8 @@ int verify_login(int sock, GG_login5 usr, uint32_t seed) {
 	unsigned long hash = gg_login_hash(
 		(const unsigned char*)searched->password, seed);
 	
-	
-	
 	return (hash == usr.hash);
-	//return 1;
 }
-
-// needs a real cleanup
 
 void handle_logging(int sock) {
     uint32_t seed = generate_seed();
@@ -107,8 +102,9 @@ void handle_logging(int sock) {
 
     GG_login5 login;
 	recv(sock, (char*)&login, sizeof(login), 0);
-	
-	LOG_INFO("CHAT: UIN=%u hash+0x%08X status=0x%08X version=0x%08X",
+
+	// TODO optional: fix version string to be readable
+	LOG_INFO("CHAT: UIN=%u hash=0x%08X status=0x%08X version=0x%08X",
 		login.uin, login.hash, login.status, login.version);
 
     // Verify and respond
@@ -116,14 +112,20 @@ void handle_logging(int sock) {
         LOG_OK("CHAT: Login OK for UIN %u", login.uin);
         gg_send_login_ok(sock);
 
+		// NOTE: v5.0 client loops through its saved users and
+		// attempts to log in each one - that's why you might see 
+		// more than one user trying to be logged - check the UINs!!
+		
 		GG_header next_header;
         while (recv(sock, (char*)&next_header, sizeof(next_header), 0) > 0) {
         LOG_INFO("CHAT: Packet type=0x%08X length=%u", 
                  next_header.type, next_header.length);
+
+
 		}
         // TODO: support packets after logging (17.03.2026 @ 21:08)
         
-    } else {
+    } else {	// if unsuccesful
         LOG_WARN("CHAT: Login FAILED for UIN %u", login.uin);
         gg_send_login_failed(sock);
     }
