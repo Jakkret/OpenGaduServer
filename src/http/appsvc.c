@@ -5,12 +5,12 @@
 #include "http_utils.h"   // <-- fix: uses thread-safe get_param
 
 /*
- *	TODO: direct v3.1 and v5 clients to chat server
+ *	TODO: direct v3.1 and v5 clients to chat server [partial]
  *	Prioritize v5 since its more documented
  
- *	TODO: separate appsvc handlers for each ver
+ *	TODO: separate appsvc handlers for each ver [completed]
  
- *	State: Unknown (16.03.2026)
+ *	State: serves properly - success (17.03.2026)
  */
 
 void handle_appsvc(int sock, char *query, int version) {
@@ -19,8 +19,8 @@ void handle_appsvc(int sock, char *query, int version) {
 	switch(version){
 		case 5: {		// version 5 - rev 2
 			
-			char tmpver[64] = {0};	// buffer --- encoded
-			char clientVersion[64] = {0};		// here lies the decoded version string
+			char tmpver[64] = {0};				// buffer --- urlencoded
+			char clientVersion[64] = {0};		// here lies the "decoded" version string
 			char lastmsg[64]= {0};
 			
 			get_param(query, "fmnumber", fmnumber, sizeof(fmnumber));
@@ -63,7 +63,8 @@ void handle_appsvc(int sock, char *query, int version) {
 
 
     char body[64];
-    snprintf(body, sizeof(body), "0 0 %s %d %s\n", HOST, PORT_CHAT, HOST);		// 0 0 127.0.0.1:8074 127.0.0.1
+    snprintf(body, sizeof(body), "0 0 %s %d %s\n", HOST, PORT_CHAT, HOST);		
+	// currently it is:						0 0 127.0.0.1 443 127.0.0.1
 
     char response[256];
     snprintf(response, sizeof(response),
