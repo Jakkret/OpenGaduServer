@@ -6,7 +6,7 @@
 #include "fmregister.h"
 
 // Declare handlers
-void handle_appsvc(int sock, char *query, int version);		//http/appsvc.c
+void handle_appsvc(int sock, char *query, int version);		// http/appsvc.c
 void handle_fmregister(int sock, char *query, int gg_version);	// http/fmregister.c
 
 void http_router(int client_sock, char *method, char *path, char *query) {
@@ -15,6 +15,8 @@ void http_router(int client_sock, char *method, char *path, char *query) {
 	*
 	* please make sure u add == 0 to any comparing argument, 
 	* it makes a large mess. (15.03.2026)
+	*
+	* TODO: make it more flexible for routing for v5 and v3.1
 	*/ 
 	
 	
@@ -27,8 +29,11 @@ void http_router(int client_sock, char *method, char *path, char *query) {
     } else if (strcmp(path, "/appsvc/fmregister2.asp") == 0) {
         handle_fmregister(client_sock, query, 5);
 
+	
 	} else if (strcmp(path, "/appsvc/fmcontactsget.asp") == 0 || strcmp(path, "/appsvc/fmcontactsput.asp") == 0 ) {
-		http_send_response(client_sock, 200, "OK", "0\n");
+		http_send_response(client_sock, 200, "OK", "0\n");		// temporary
+
+		// TODO: handle contact list get/put later
 	} else {
         LOG_WARN("HTTP: Unknown path: %s", path);
         http_send_response(client_sock, 404, "Not Found",
