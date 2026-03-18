@@ -1,8 +1,9 @@
 This version as of now (17.03.2026) is partially stable (register works!)
 
 If you want to soon work on the repository, please wait until
-the project will grow and won't be in the current structure 
-(main/OpenGaduServer 0.0.1/)
+the project will grow and won't be in the current structure "main/OpenGaduServer 0.0.1/"
+
+CURRENT STRUCTURE: "main/src/"
 
 The version from there is also updated, but as the project will grow
 the functions will expand and support will be extended. Currently, the
