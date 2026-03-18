@@ -1,5 +1,7 @@
 # Sources about GaduGadu Protocol:
-### LibGadu _by Wojtekka and LibGadu team_: <br>
+When creating **OpenGaduServer**, this project uses references from community-made libraries, projects and simillar things to that. Sources listed below are the ones which are most used when troubleshooting and/or implementing functions
+
+### LibGadu _by Wojtekka and LibGadu Team_: <br>
 Explains most of the core functions of the way that client works. The Website version is focused on versions from 6.0 and higher 
 - Website: https://libgadu.github.io/protocol<br>
 - Github: https://github.com/wojtekka/libgadu<br>
