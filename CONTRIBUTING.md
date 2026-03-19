@@ -27,7 +27,7 @@ Date:   Sun Dec 22 15:52:35 2024 +0100
 
 więc **prosimy o dodanie tych rzeczy przed kontrybucją, by uniknąć nieporozumień!**
 
-> ![NOTE]
+> [!NOTE]
 > Kiedy wykonasz ustawienie po odesłaniu kontrybucji, możesz dodać dane autora z powrotem dzięki:
 > `git commit --amend --author="Jan Kowalski <twojadres@poczty.pl>"`
 > Jednak zalecamy by było to zrobione wcześniej, by uniknąć nieporozumień.
