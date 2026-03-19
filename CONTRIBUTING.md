@@ -32,6 +32,9 @@ więc **prosimy o dodanie tych rzeczy przed kontrybucją, by uniknąć nieporozu
 > `git commit --amend --author="Jan Kowalski <twojadres@poczty.pl>"`
 > Jednak zalecamy by było to zrobione wcześniej, by uniknąć nieporozumień.
 
+
+Również podczas kontrybucji w kodzie OGS prosimy o trzymanie się angielskiego języka np. funkcji, nazw zmiennych, i czasami komentarzy. Commity mogą być w języku angielskim, ale nie muszą - *czy anglik używałby GaduGadu?*.
+
 ## 2. W czym mogę pomóc?
 Każda dodana linijka pomaga rozwojowi projektu, nawet jeśli to ogranicza się do poprawiania słów w dokumentacji. Na przykład możesz pomóc w:
 - **napisaniu dokumentacji**
