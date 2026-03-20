@@ -49,6 +49,9 @@
 
     #define thread_join(t) \
         WaitForSingleObject(t, INFINITE)
+		
+	#define thread_detach(t) \
+		CloseHandle(t)
 
 #else
     #include <pthread.h>
@@ -59,6 +62,8 @@
 
     #define thread_join(t) \
         pthread_join(t, NULL)
+	#define thread_detach(t) \
+		pthread_detach(t)
 #endif
 
 // --- Socket initialization ------------------------

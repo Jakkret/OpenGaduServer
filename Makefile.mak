@@ -7,8 +7,10 @@ SRCS = src/main.c \
        src/http/http_utils.c \
        src/http/appsvc.c \
        src/http/fmregister.c \
-       src/chat/chat_server.c \
-	   src/chat/gg_login.c \
+	   src/chat/client.c \
+	   src/chat/handlers.c \
+	   src/chat/protocol.c \
+	   src/chat/chat_server.c \
        src/database/users.c
 
 # Detect OS

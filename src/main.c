@@ -3,7 +3,8 @@
 #include "server.h"		// config for the server - TODO: make it with simple svr_conf.ini file
 #include "platform.h"   // <-- double compatibility with Win32 and Linux
 #include "database/users.h"
-#include "chat/gg_login.h"	// temporary
+#include "chat/protocol.h"
+#include "chat/client.h"
 
 void* http_server_start(void* arg);
 void* chat_server_start(void* arg);

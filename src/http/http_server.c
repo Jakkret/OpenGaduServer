@@ -40,8 +40,8 @@ void* http_server_start(void* arg) {
         LOG_INFO("HTTP: New connection from %s", inet_ntoa(client_address.sin_addr));
 
         // Receive request
-        char buffer[BUFOR_HTTP] = {0};
-        recv(client_sock, buffer, BUFOR_HTTP - 1, 0);
+        char buffer[BUFFER_HTTP] = {0};
+        recv(client_sock, buffer, BUFFER_HTTP - 1, 0);
 
         // Parse first line: "GET /path?query HTTP/1.1"
         char method[8]       = {0};
