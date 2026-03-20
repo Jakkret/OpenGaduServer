@@ -14,13 +14,14 @@
 
 #define GG_NOTIFY_FIRST     0x000f
 #define GG_NOTIFY_LAST      0x0010
-#define GG_LIST_EMPTY       0x0012
-#define GG_NOTIFY_REPLY   0x000c
+#define GG_LIST_EMPTY		0x0012
+#define GG_NOTIFY_REPLY		0x000c
 #define GG_ADD_NOTIFY       0x000d
 #define GG_REMOVE_NOTIFY    0x000e
 
 #define GG_NEW_STATUS       0x0002
-#define GG_STATUS         0x0006
+#define GG_STATUS77         0x0006
+#define GG_STATUS50			0x0002	// this works!!!
 
 #define GG_SEND_MSG         0x000b
 #define GG_RECV_MSG         0x000a

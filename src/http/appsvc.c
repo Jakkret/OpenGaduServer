@@ -63,8 +63,8 @@ void handle_appsvc(int sock, char *query, int version) {
 
 
     char body[64];
-    snprintf(body, sizeof(body), "0 0 %s:%d %s\n", HOST, PORT_CHAT, HOST);		
-	// currently it is:						0 0 192.168.137.1:443 192.168.137.1
+    snprintf(body, sizeof(body), "0 0 %s %s\n", HOST, HOST);		
+	// currently it is:						0 0 192.168.137.1 192.168.137.1
 
     char response[256];
     snprintf(response, sizeof(response),

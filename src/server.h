@@ -5,7 +5,7 @@
 
 // -- Ports & host ----------
 #define PORT_HTTP 80		// register
-#define PORT_CHAT 443		// actual client/server logic
+#define PORT_CHAT 8074		// actual client/server logic
 #define HOST       "192.168.137.1"
 #define HOST_PUBLIC "192.168.137.1"
 #define FALLBACK_HOST "192.168.137.1"

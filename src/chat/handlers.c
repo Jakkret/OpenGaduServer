@@ -108,7 +108,8 @@ void changed_status(client_t *c) {
         gg_notify_reply_t reply;
         reply.uin    = c->uin;
         reply.status = c->status;
-        write_full_packet(other, GG_STATUS, &reply, sizeof(reply));
+        write_full_packet(other, GG_STATUS50, &reply, sizeof(reply));
+		// sends 0x0002 and shows the status
 
 		LOG_INFO("HANDLER: Sending status packet to UIN %u: uin=%u status=0x%08X size=%zu",
 			other->uin, reply.uin, reply.status, sizeof(reply));
