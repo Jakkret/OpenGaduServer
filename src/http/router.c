@@ -61,8 +61,7 @@ void http_router(int client_sock, char *method, char *path, char *query) {
 		
 		send(client_sock, buf, size, 0);
 		free(buf);
-
-		// TODO: handle contact list get/put later
+		
 	} else {
         LOG_WARN("HTTP: Unknown path: %s", path);
         http_send_response(client_sock, 404, "Not Found",
