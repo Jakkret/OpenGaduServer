@@ -9,6 +9,7 @@
 #define HOST       "192.168.137.1"
 #define HOST_PUBLIC "192.168.137.1"
 #define FALLBACK_HOST "192.168.137.1"
+#define HOST_UNAVAIL	"notoperating"
 
 // -- Buffer sizes ---
 #define BUFFER_HTTP  4096

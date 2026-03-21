@@ -28,8 +28,8 @@ Date:   Sun Dec 22 15:52:35 2024 +0100
 więc **prosimy o dodanie tych rzeczy przed kontrybucją, by uniknąć nieporozumień!**
 
 > [!NOTE]
-> Kiedy wykonasz ustawienie po odesłaniu kontrybucji, możesz dodać dane autora z powrotem dzięki:
-> `git commit --amend --author="Jan Kowalski <twojadres@poczty.pl>"`
+> Kiedy wykonasz ustawienie po odesłaniu kontrybucji, możesz dodać dane autora z powrotem dzięki:<br>
+> `git commit --amend --author="Jan Kowalski <twojadres@poczty.pl>"`<br>
 > Jednak zalecamy by było to zrobione wcześniej, by uniknąć nieporozumień.
 
 
@@ -40,9 +40,10 @@ Każda dodana linijka pomaga rozwojowi projektu, nawet jeśli to ogranicza się 
 - **napisaniu dokumentacji**
 - **Implementacji funkcji do serwera OGS**,
 - **Sprawdzaniu działania Serwera na klientach GaduGadu** (wspierane wersje podane w README projektu),
-- **Badanie reakcji klienta przez programy sprawdzające traffic sieciowy**
+- **Badaniu reakcji klienta przez programy sprawdzające traffic sieciowy**
+- **Inspekcji Działania klienta dzięki narzędziom np. HxD**
 - **Tłumaczeniu dokumentacji na Polski -> Angielski** (lub odwrotnie)
-- **Wyszukiwaniu instalatorów klientów GaduGadu** (na chwile obecną wersjii 5.x)
+- **Wyszukiwaniu instalatorów klientów GaduGadu** (na chwile obecną wersji 5.x) - Aby sprawdzić kompatybilność z innymi klientami GG, potrzebujemy instalatorów wersji 5.x aby upewnić się, że serwer poprawnie komunikuje się z klientem!
 
 ## 3. Jak zrobić zmiany?
 

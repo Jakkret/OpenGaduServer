@@ -63,7 +63,7 @@ void handle_appsvc(int sock, char *query, int version) {
 
 
     char body[64];
-    snprintf(body, sizeof(body), "0 0 %s %s\n", HOST, HOST);		
+    snprintf(body, sizeof(body), "0 0 %s %s\n", HOST, HOST_UNAVAIL);		
 	// currently it is:						0 0 192.168.137.1 192.168.137.1
 
     char response[256];

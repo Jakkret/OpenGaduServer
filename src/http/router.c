@@ -30,8 +30,37 @@ void http_router(int client_sock, char *method, char *path, char *query) {
         handle_fmregister(client_sock, query, 5);
 
 	
-	} else if (strcmp(path, "/appsvc/fmcontactsget.asp") == 0 || strcmp(path, "/appsvc/fmcontactsput.asp") == 0 ) {
-		http_send_response(client_sock, 200, "OK", "0\n");		// temporary
+	} else if (strcmp(path, "/getbanner.asp") == 0 ) {
+		
+		// serve a gif banner to client - experimental
+		FILE *f = fopen("img/gadu-gadu-banner.gif", "rb");
+		if(!f) {
+			http_send_response(client_sock, 404, "Not Found",
+            "404 - Not Found\n");
+			return;
+		}
+		
+		// read file size
+		fseek(f, 0, SEEK_END);
+		long size = ftell(f);
+		fseek(f, 0, SEEK_SET);
+		
+		// read file off buffer
+		char *buf = malloc(size);
+		fread(buf, 1, size, f);
+		fclose(f);
+		
+		char header[256];
+		snprintf(header, sizeof(header),
+			"HTTP/1.0 200 OK\r\n",
+			"Content-Type: image/gif\r\n"
+			"Content-Length: %ld\r\n"
+			"\r\n", size);
+			
+		send(client_sock, header, strlen(header), 0);
+		
+		send(client_sock, buf, size, 0);
+		free(buf);
 
 		// TODO: handle contact list get/put later
 	} else {
