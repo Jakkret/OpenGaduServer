@@ -6,4 +6,6 @@ TODO: cleanup *.c and *.h files, redo their logic and make the names clearer to 
 ---- CHAT
 TODO: make a neccesary revolution in there.
 TODO: add status and contact list functionality
+TODO: add ogs-conf.ini
+NOTE: prioritize Linux support for external configs.
 
