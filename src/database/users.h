@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <time.h>
 
-// ── Constants ─────────────────────────────────────────────
+// Constants
 #define DB_FILE          "users.dat"
 #define DB_MAX_USERS     10000
 #define DB_EMAIL_LEN     128
@@ -13,23 +13,22 @@
 #define UIN_MIN 10000000
 #define UIN_MAX 99999999
 
-// ── User record ───────────────────────────────────────────
+// User Record
 typedef struct {
-    uint32_t uin;                    // 8-digit unique user number
-    char     email[DB_EMAIL_LEN];    // optional (v5) -- user's email address
-    char     password[DB_PASS_HASH_LEN]; // hashed password
-	char 	 qa[256];					// security question
-    uint32_t registered_at;          // unix timestamp of registration
-    int      active;                 // 1 = active, 0 = deleted
+    uint32_t uin;                           // 8-digit unique user number
+    char     email[DB_EMAIL_LEN];      	    // optional (v5) -- user's email address
+    char     password[DB_PASS_HASH_LEN]; 	// hashed password
+	char 	 qa[256];						// security question (v5)
+    uint32_t registered_at;        		    // unix timestamp of registration
+    int      active;                		// 1 = active, 0 = deleted
 } User;
 
-// ── Database state ────────────────────────────────────────
+// DB state
 typedef struct {
     User     users[DB_MAX_USERS];
     int      count;
 } UserDatabase;
 
-// ── Public API ────────────────────────────────────────────
 
 // Initialize database — load from file if exists
 int  db_init();

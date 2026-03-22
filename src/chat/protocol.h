@@ -5,51 +5,61 @@
 #include "../platform.h"
 
 // Packet definitions
-#define GG_WELCOME          0x0001
-#define GG_LOGIN            0x0001  // GG 3.x
-#define GG_LOGIN5           0x000c  // GG 5.x
-#define GG_LOGIN_OK         0x0003
-#define GG_LOGIN_FAILED     0x0009
-#define GG_DISCONNECTING    0x000d
+#define GG_WELCOME          		 0x0001
+#define GG_LOGIN3           		 0x0001  // GG 3.x
+#define GG_LOGIN5           		 0x000c  // GG 5.x
+#define GG_LOGIN_OK         		 0x0003
+#define GG_LOGIN_FAILED     		 0x0009
+#define GG_DISCONNECTING    		 0x000d
 
-#define GG_NOTIFY_FIRST     0x000f
-#define GG_NOTIFY_LAST      0x0010
-#define GG_LIST_EMPTY		0x0012
-#define GG_NOTIFY_REPLY		0x000c
-#define GG_ADD_NOTIFY       0x000d
-#define GG_REMOVE_NOTIFY    0x000e
 
-#define GG_NEW_STATUS       0x0002
-#define GG_STATUS77         0x0006
-#define GG_STATUS50			0x0002	// this works!!!
+// contact list
+#define GG_NOTIFY_FIRST     		 0x000f
+#define GG_NOTIFY_LAST      		 0x0010
+#define GG_LIST_EMPTY				 0x0012
+#define GG_NOTIFY_REPLY				 0x000c
+#define GG_ADD_NOTIFY       		 0x000d
+#define GG_REMOVE_NOTIFY    		 0x000e
 
-#define GG_SEND_MSG         0x000b
-#define GG_RECV_MSG         0x000a
-#define GG_SEND_MSG_ACK     0x0005
+// types (for gg_notify_t -> int type)
+#define GG_USER_BUDDY			0x0001
+#define GG_USER_FRIEND			0x0002
 
-#define GG_PING             0x0008
+	// user state (gg_notify_t -> int type)
+#define GG_USER_NORMAL			0x0003
+#define GG_USER_BLOCKED			0x0004
+
+// status changes
+#define GG_NEW_STATUS       		 0x0002
+#define GG_STATUS77         		 0x0006
+#define GG_STATUS50					 0x0002	
+
+#define GG_SEND_MSG         		 0x000b
+#define GG_RECV_MSG         		 0x000a
+#define GG_SEND_MSG_ACK     		 0x0005
+
+#define GG_PING             		 0x0008
 
 // Client status
-#define GG_STATUS_NOT_AVAIL      0x0001	// "niedostępny"
-#define GG_STATUS_AVAIL          0x0002	// "dostępny"
-#define GG_STATUS_BUSY           0x0003	// v5.x - "Zaraz Wracam"
-#define GG_STATUS_INVISIBLE      0x0014 // "niewidoczny"
-// ---- left for future compatiblity -------
-#define GG_STATUS_NOT_AVAIL_DESCR 0x0015
-#define GG_STATUS_AVAIL_DESCR    0x0004
-#define GG_STATUS_BUSY_DESCR     0x0005
-#define GG_STATUS_FRIENDS_MASK   0x8000
-#define GG_STATUS_VOICE_MASK     0x0200
+#define GG_STATUS_NOT_AVAIL      	 0x0001	// "niedostępny"
+#define GG_STATUS_AVAIL          	 0x0002	// "dostępny"
+#define GG_STATUS_BUSY          	 0x0003	// "Zaraz Wracam" / "nie przeszkadzaj"
+#define GG_STATUS_INVISIBLE     	 0x0014 // "niewidoczny"
+#define GG_STATUS_NOT_AVAIL_DESCR 	 0x0015
+#define GG_STATUS_AVAIL_DESCR    	 0x0004
+#define GG_STATUS_BUSY_DESCR     	 0x0005
+#define GG_STATUS_FRIENDS_MASK   	 0x8000
+#define GG_STATUS_VOICE_MASK     	 0x0200
 
 // Message classes
-#define GG_CLASS_MSG        0x0004
-#define GG_CLASS_CHAT       0x0008
-#define GG_CLASS_ACK        0x0020
-#define GG_CLASS_QUEUED     0x0001
+#define GG_CLASS_MSG        		 0x0004
+#define GG_CLASS_CHAT       		 0x0008
+#define GG_CLASS_ACK        		 0x0020
+#define GG_CLASS_QUEUED    	 		 0x0001
 
 // ACK TYPES
-#define GG_ACK_DELIVERED    0x0002
-#define GG_ACK_QUEUED       0x0003
+#define GG_ACK_DELIVERED    		 0x0002
+#define GG_ACK_QUEUED       		 0x0003
 
 // Packets
 typedef struct {

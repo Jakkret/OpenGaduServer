@@ -9,6 +9,31 @@
 #include "protocol.h"
 #include "handlers.h"
 
+// show clients the change
+void changed_status(client_t *c) {
+	client_t **all = client_get_all();
+	
+    // look through all online clients
+    for (int i = 0; i < MAX_CLIENTS; i++) {
+        client_t *other = all[i];
+        if (!other || other == c) continue;
+        if (other->state != STATE_LOGIN_OK) continue;
+
+        // check if other has c in its contacts
+        if (!client_find_friend(other, c->uin)) continue;
+
+        //send status
+        gg_notify_reply_t reply;
+        reply.uin    = c->uin;
+        reply.status = c->status;
+        write_full_packet(other, GG_NEW_STATUS, &reply, sizeof(reply));
+		// sends [0x0002] and shows the new status
+
+		LOG_INFO("HANDLER: Sending status packet to UIN %u: uin=%u status=0x%08X size=%zu",
+			other->uin, reply.uin, reply.status, sizeof(reply));
+    }
+}
+
 // Login handler for v5
 static int gg_login_handler(client_t *c, void *data, uint32_t len) {
     if (len < sizeof(gg_login5_t)) return -2;
@@ -38,12 +63,13 @@ static int gg_login_handler(client_t *c, void *data, uint32_t len) {
 
     c->uin     = l->uin;
     c->state   = STATE_LOGIN_OK;
-    c->status  = l->status;
+    c->status  = GG_STATUS_AVAIL;	// od razu pokazuj dostępność po zalogowaniu
     c->version = l->version;
     c->timeout = time(NULL) + TIMEOUT_DEFAULT;
 
     LOG_OK("HANDLER: Login OK for UIN %u", c->uin);
     write_full_packet(c, GG_LOGIN_OK, NULL, 0);
+	changed_status(c);
 
     return 0;
 }
@@ -80,6 +106,21 @@ static int gg_notify_end_handler(client_t *c, void *data, uint32_t len) {
         write_full_packet(c, GG_NOTIFY_REPLY, &reply, sizeof(reply));
         LOG_INFO("HANDLER: Contact %u -> %s", uin, friend ? "ONLINE" : "OFFLINE");
     }
+	
+	// FIX - 22.03.2026: klienci późno dostają statusy swoich kontaktów
+	// informuj zalogowanych użytkowników że jesteś online
+	for (int i = 0; i < c->friend_count; i++) {
+		client_t *friend = client_find(c->friends[i].uin);
+		if (!friend) continue;
+		
+		// wyślij temu kontaktowi twój status
+		gg_notify_reply_t reply;
+		reply.uin    = c->uin;
+		reply.status = c->status;
+		write_full_packet(friend, 0x0002, &reply, sizeof(reply));
+	}
+
+	changed_status(c);
 
     return 0;
 }
@@ -91,30 +132,6 @@ static int gg_list_empty_handler(client_t *c, void *data, uint32_t len) {
     return 0;
 }
 
-// show clients the change
-void changed_status(client_t *c) {
-	client_t **all = client_get_all();
-	
-    // look through all online clients
-    for (int i = 0; i < MAX_CLIENTS; i++) {
-        client_t *other = all[i];
-        if (!other || other == c) continue;
-        if (other->state != STATE_LOGIN_OK) continue;
-
-        // check if other has c in its contacts
-        if (!client_find_friend(other, c->uin)) continue;
-
-        //send status
-        gg_notify_reply_t reply;
-        reply.uin    = c->uin;
-        reply.status = c->status;
-        write_full_packet(other, GG_STATUS50, &reply, sizeof(reply));
-		// sends 0x0002 and shows the status
-
-		LOG_INFO("HANDLER: Sending status packet to UIN %u: uin=%u status=0x%08X size=%zu",
-			other->uin, reply.uin, reply.status, sizeof(reply));
-    }
-}
 
 //	New status
 static int gg_new_status_handler(client_t *c, void *data, uint32_t len) {
@@ -162,6 +179,38 @@ static int gg_new_status_handler(client_t *c, void *data, uint32_t len) {
     return 0;
 }
 
+// mam nadzieję, że to naprawi brak odświeżania po zalogowaniu
+// - Jakkret, 22.03.2026
+static int gg_notify_add_handler(client_t *c, void *data, uint32_t len){
+	if(c->state != STATE_LOGIN_OK) return -3;
+	if(len < sizeof(gg_add_remove_t)) return -2;
+	
+	gg_add_remove_t *ar = (gg_add_remove_t*) data;	
+	if(ar->uin == 0) return 1;
+	
+	client_add_friend(c, ar->uin, ar->type);
+	
+	// odeślij status dodanego kontaktu
+	client_t *friend = client_find(ar->uin);
+	gg_notify_reply_t reply;
+	reply.uin = ar->uin;											// numer dodanego kontaktu
+	reply.status = friend ? friend->status : GG_STATUS_NOT_AVAIL;	// status kontaktu
+	write_full_packet(c, GG_NOTIFY_REPLY, &reply, sizeof(reply));
+}
+
+static int gg_notify_remove_handler(client_t *c, void *data, uint32_t len){
+	if(c->state != STATE_LOGIN_OK) return -3;
+	if(len < sizeof(gg_add_remove_t)) return -2;
+	
+	gg_add_remove_t *ar = (gg_add_remove_t*) data;
+	client_remove_friend(c, ar->uin);
+	
+	LOG_INFO("HANDLER: UIN %u removed %u", c->uin, ar->uin);
+	return 0;
+}
+
+
+
 // ── Ping handler ──────────────────────────────────────────
 static int gg_ping_handler(client_t *c, void *data, uint32_t len) {
     LOG_INFO("HANDLER: Ping from UIN %u", c->uin);
@@ -172,12 +221,14 @@ static int gg_ping_handler(client_t *c, void *data, uint32_t len) {
 
 // handler table instead of big switch statement
 static const gg_handler_t gg_handlers[] = {
-    { GG_LOGIN5,        gg_login_handler       },
-    { GG_NOTIFY_FIRST,  gg_notify_handler      },
-    { GG_NOTIFY_LAST,   gg_notify_end_handler  },
-    { GG_LIST_EMPTY,    gg_list_empty_handler  },
-    { GG_NEW_STATUS,    gg_new_status_handler  },
-    { GG_PING,          gg_ping_handler        },
+    { GG_LOGIN5,        gg_login_handler		 },
+    { GG_NOTIFY_FIRST,  gg_notify_handler		 },
+    { GG_NOTIFY_LAST,   gg_notify_end_handler	 },
+    { GG_LIST_EMPTY,    gg_list_empty_handler	 },
+    { GG_NEW_STATUS,    gg_new_status_handler	 },
+	{ GG_ADD_NOTIFY,	gg_notify_add_handler	 },
+	{ GG_REMOVE_NOTIFY, gg_notify_remove_handler },
+    { GG_PING,          gg_ping_handler        	 },
     { 0, NULL }
 };
 

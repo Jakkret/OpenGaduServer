@@ -33,7 +33,9 @@ void http_router(int client_sock, char *method, char *path, char *query) {
 	} else if (strcmp(path, "/getbanner.asp") == 0 ) {
 		
 		// serve a gif banner to client - experimental
-		FILE *f = fopen("img/gadu-gadu-banner.gif", "rb");
+		//
+		// TODO: wyślij zdjęcie, a nie binarny zapis tego ._.
+		FILE *f = fopen("img/test.png", "rb");
 		if(!f) {
 			http_send_response(client_sock, 404, "Not Found",
             "404 - Not Found\n");

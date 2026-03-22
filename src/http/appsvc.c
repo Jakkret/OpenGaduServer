@@ -62,9 +62,17 @@ void handle_appsvc(int sock, char *query, int version) {
 	}
 
 
+
+	/* Na to wychodzi że w czasach GG v5.0 używano
+	 * dwóch stron appmsg - appmsg był dla v3.1
+	 * a appmsg2 był dla v5.0.
+	 *
+	 * więcej w blogu z dnia 22.03.2026
+	 */
+
     char body[64];
     snprintf(body, sizeof(body), "0 0 %s %s\n", HOST, HOST_UNAVAIL);		
-	// currently it is:						0 0 192.168.137.1 192.168.137.1
+	// currently it is:			  0 0 192.168.137.1 notoperating
 
     char response[256];
     snprintf(response, sizeof(response),
