@@ -3,10 +3,10 @@
 Witaj w OpenGaduServer! Jeżeli chcesz kontrybutować do tego projekty, to masz wiele działów, w których możesz wesprzeć rozwój projektu - nawet dzięki jednej linijce! Mając dużo sposobów kontrybucji, w podpunkcie [W czym mogę pomóc?](#2.-w-czym-moge-pomóc?) opisane jest Jak i co to znaczy wesprzeć w danej kategorii. 
 
 ------------
-# Spis treści
-[1. Zanim wykonasz commit...](https://github.com/Jakkret/OpenGaduServer?tab=contributing-ov-file#1-zanim-wykonasz-commit)
-[2. W czym mogę pomóc?](https://github.com/Jakkret/OpenGaduServer?tab=contributing-ov-file#2-w-czym-mog%C4%99-pom%C3%B3c)
-[3. Jak zrobić zmiany?](https://github.com/Jakkret/OpenGaduServer?tab=contributing-ov-file#3-jak-zrobi%C4%87-zmiany)
+# Spis treści<br>
+[1. Zanim wykonasz commit...](#1-zanim-wykonasz-commit)<br>
+[2. W czym mogę pomóc?](#2-w-czym-mog%C4%99-pom%C3%B3c)<br>
+[3. Jak zrobić zmiany?](#3-jak-zrobi%C4%87-zmiany)<br><br>
 -----------
 
 ## 1. Zanim wykonasz commit...
