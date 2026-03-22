@@ -1,5 +1,4 @@
-Tutaj wpisujemy ogólnie każde TODO i jej kategorie. Upewnij się że komentarze w kodzie czy tutaj są po angielsku. (patrz CONTRIBUTING.md, punkt 1)
-
+Tutaj wpisujemy ogólnie każde TODO i jej kategorie.
 
 TODO: cleanup *.c and *.h files, redo their logic and make the names clearer to navigate around
 
@@ -8,4 +7,6 @@ TODO: make a neccesary revolution in there.
 TODO: add status and contact list functionality
 TODO: add ogs-conf.ini
 NOTE: prioritize Linux support for external configs.
+
+TODO: add debug test scripts (e.g. chat-reply bots @ /debug)
 
