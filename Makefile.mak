@@ -18,7 +18,7 @@ ifeq ($(OS), Windows_NT)
     TARGET = obj/serwer_gg.exe
     LIBS   = -lws2_32
 else
-    TARGET = serwer_gg
+    TARGET = obj/serwer_gg
     LIBS   = -lpthread
 endif
 

@@ -25,7 +25,7 @@ int main() {
 
     printf("\n");
     printf("  +------------------------------+\n");
-    printf("  |    Open Gadu Server 0.0.1    |\n");
+    printf("  |    Open Gadu Server 0.1.1    |\n");
     printf("  |    still in development      |\n");
     printf("  +------------------------------+\n");
 
