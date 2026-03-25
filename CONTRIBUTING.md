@@ -1,7 +1,7 @@
 # Jak możesz kontrybutować do tego repozytorium?
 > [!NOTE]
-> Punkty wspomniane tutaj są w wielkim wyogólnieniu. W razie dalszych pytań skontaktuj się na serwerze discord OGS-devel.<br>
-<br>
+> Punkty wspomniane tutaj są w wielkim wyogólnieniu. W razie dalszych pytań skontaktuj się na serwerze discord OGS-devel.<br><br>
+
 Witaj w OpenGaduServer! Jeżeli chcesz kontrybutować do tego projekty, to masz wiele działów, w których możesz wesprzeć rozwój projektu - nawet dzięki jednej linijce! Mając dużo sposobów kontrybucji, w podpunkcie [W czym mogę pomóc?](#2-w-czym-mog%C4%99-pom%C3%B3c) opisane jest Jak i co to znaczy wesprzeć w danej kategorii. 
 
 ------------
@@ -43,7 +43,7 @@ Każda dodana linijka pomaga rozwojowi projektu, nawet jeśli to ogranicza się 
 		**Co musisz umieć?:**<br>
 		możesz lekko opierać się na sztucznej inteligencji[^1]<br>
   		- język C,<br>
-		- winsock dla win32 lub socket + inne biblioteki dla GNU/linux
+		- winsock dla win32 lub socket + inne biblioteki dla GNU/linux[^2]
   		- rozumieć jak używać dokumentacji i używać ją do implementacji<br>
 - **Sprawdzaniu działania Serwera na klientach GaduGadu** (wspierane wersje podane w README projektu) - Czyli innymi słowy alpha-/beta-tester samej kompilacji OGS. Osoby te, dostają gotową kompilacje od deweloperów, bądź dostają instrukcje do kompilacji[^3] 
 - **Badaniu reakcji klienta przez programy sprawdzające traffic sieciowy** - Takie programy, np. Wireshark pomagają w inspektowaniu reakcji klienta na serwer. Pomaga to podczas sprawdzania odpowiedzi klienta na pakiet - gdyż dokumentacje nie wspominają o różnicach każdej z wersji protokołu GG, musimy to robić sami -  i jest zabawa!
@@ -61,4 +61,4 @@ i to tyle :P
 
 [^1]: Tak jak wspomniano, możesz używać sztucznej inteligencji by ci lekko podpowiadała, ale musisz **wiedzieć jak, co działa i wiedzieć co kopiujesz!**
 [^2]: szybka biblioteka kompatybilności w `src/platform.h` ułatwia problemy z róźnymi systemami... W chwili dopisywania (22.03.2026) jest priorytetowane wsparcie dla Win32, jednak staraj się tworzyć funkcje i definicje które są cross-compatible jak z win32 i GNU/linux
-[^3]: Takie rzeczy należy załatwiać na serwerze discord **OGS-devel**
+[^3]: Takie rzeczy należy załatwiać na serwerze discord **OGS-devel**s
