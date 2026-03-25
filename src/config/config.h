@@ -6,6 +6,8 @@ typedef struct{
     int Port;
 } ServerConf;
 
+ServerConf SCCHAT, SCHTTP;
+
 int ReadConfig(const char *filename);
 
 #endif CONFIG_H

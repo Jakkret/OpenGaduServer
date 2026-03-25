@@ -5,8 +5,6 @@
 // Kod nie jest testowany, nie implementuj funkcji bez testowania.
 // Napisano 25.03.2026 - Jakkret
 
-ServerConf SCCHAT, SCHTTP;
-
 /*
  * Cuts the string from a specific part.
  *
