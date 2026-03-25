@@ -2,14 +2,13 @@
 > [!NOTE]
 > Punkty wspomniane tutaj są w wielkim wyogólnieniu. W razie dalszych pytań skontaktuj się na serwerze discord OGS-devel.<br>
 <br>
-Witaj w OpenGaduServer! Jeżeli chcesz kontrybutować do tego projekty, to masz wiele działów, w których możesz wesprzeć rozwój projektu - nawet dzięki jednej linijce! Mając dużo sposobów kontrybucji, w podpunkcie [W czym mogę pomóc?](#2.-w-czym-moge-pomóc?) opisane jest Jak i co to znaczy wesprzeć w danej kategorii. 
+Witaj w OpenGaduServer! Jeżeli chcesz kontrybutować do tego projekty, to masz wiele działów, w których możesz wesprzeć rozwój projektu - nawet dzięki jednej linijce! Mając dużo sposobów kontrybucji, w podpunkcie [W czym mogę pomóc?](#2-w-czym-mog%C4%99-pom%C3%B3c) opisane jest Jak i co to znaczy wesprzeć w danej kategorii. 
 
 ------------
 # Spis treści<br>
 1. [Zanim wykonasz commit...](#1-zanim-wykonasz-commit)<br>
 2. [W czym mogę pomóc?](#2-w-czym-mog%C4%99-pom%C3%B3c)<br>
-3. [Jak zrobić zmiany?](#3-jak-zrobi%C4%87-zmiany)<br>
-<br>
+3. [Jak zrobić zmiany?](#3-jak-zrobi%C4%87-zmiany)<br><br>
 -----------
 
 ## 1. Zanim wykonasz commit...
@@ -44,7 +43,7 @@ Każda dodana linijka pomaga rozwojowi projektu, nawet jeśli to ogranicza się 
 		**Co musisz umieć?:**<br>
 		możesz lekko opierać się na sztucznej inteligencji[^1]<br>
   		- język C,<br>
-		- \<winsock>\[^2] dla win32 lub \<socket>\[^2] + inne biblioteki dla GNU/linux<br>
+		- winsock dla win32 lub socket + inne biblioteki dla GNU/linux
   		- rozumieć jak używać dokumentacji i używać ją do implementacji<br>
 - **Sprawdzaniu działania Serwera na klientach GaduGadu** (wspierane wersje podane w README projektu) - Czyli innymi słowy alpha-/beta-tester samej kompilacji OGS. Osoby te, dostają gotową kompilacje od deweloperów, bądź dostają instrukcje do kompilacji[^3] 
 - **Badaniu reakcji klienta przez programy sprawdzające traffic sieciowy** - Takie programy, np. Wireshark pomagają w inspektowaniu reakcji klienta na serwer. Pomaga to podczas sprawdzania odpowiedzi klienta na pakiet - gdyż dokumentacje nie wspominają o różnicach każdej z wersji protokołu GG, musimy to robić sami -  i jest zabawa!
