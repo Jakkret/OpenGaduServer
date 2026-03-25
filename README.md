@@ -1,5 +1,5 @@
 # OpenGaduServer
-'Samowystarczalny' serwer kompatybilny z klientami Gadu-Gadu dla własnego hostowania (self-hosting). Kod źródłowy jest napisany w C i opiera się na dokumentacji takich jak [libgadu](https://github.com/Jakkret/OpenGaduServer/blob/main/docs/SOURCES.md#libgadu-by-wojtekka-and-libgadu-team1-)) (źródła są w [`SOURCES.md`](https://github.com/Jakkret/OpenGaduServer/blob/main/docs/SOURCES.md)). Jak na razie, projekt świetnie działa na systemach Windows (linux już nie ... ale kiedyś będzie!). Serwer skupia się w tej chwili na wspieraniu Klienta 5.x (patrz Lista Wsparcia)
+'Samowystarczalny' serwer kompatybilny z klientami Gadu-Gadu dla własnego hostowania (self-hosting). Kod źródłowy jest napisany w C i opiera się na dokumentacji takich jak [libgadu](https://github.com/Jakkret/OpenGaduServer/blob/main/docs/SOURCES.md#libgadu-by-wojtekka-and-libgadu-team1-)) (źródła są w [`SOURCES.md`](https://github.com/Jakkret/OpenGaduServer/blob/main/docs/SOURCES.md)). Jak na razie, projekt świetnie działa na systemach Windows i Linux (działaj z przywilejem `sudo`). Serwer skupia się w tej chwili na wspieraniu Klienta 5.x (patrz Lista Wsparcia)
 
 Jak chcesz wydać commit do tego repozytorium - **obczaj CONTRIBUTING.MD** - Więcej rąk sprawi, że ten projekt będzie stabilnie chodził wcześniej.. a czasami lepiej!
 

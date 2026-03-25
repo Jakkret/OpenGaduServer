@@ -8,7 +8,8 @@ Witaj w OpenGaduServer! Jeżeli chcesz kontrybutować do tego projekty, to masz 
 # Spis treści<br>
 1. [Zanim wykonasz commit...](#1-zanim-wykonasz-commit)<br>
 2. [W czym mogę pomóc?](#2-w-czym-mog%C4%99-pom%C3%B3c)<br>
-3. [Jak zrobić zmiany?](#3-jak-zrobi%C4%87-zmiany)<br><br>
+3. [Jak zrobić zmiany?](#3-jak-zrobi%C4%87-zmiany)<br>
+<br>
 -----------
 
 ## 1. Zanim wykonasz commit...

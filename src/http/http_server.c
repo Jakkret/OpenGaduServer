@@ -61,7 +61,7 @@ void* http_server_start(void* arg) {
         }
 
 	    // If POST — extract body and append to query
-        // GG3 sends registration params in POST body
+        // GG sends registration params in POST body
         if (strcmp(method, "POST") == 0) {
             char *body_start = strstr(buffer, "\r\n\r\n");
             if (body_start) {

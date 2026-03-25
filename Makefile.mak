@@ -27,5 +27,7 @@ $(TARGET): $(SRCS)
 
 clean:
 	rm -f $(TARGET)
+env:
+    mkdir obj/
 
 .PHONY: clean
