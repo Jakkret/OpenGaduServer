@@ -1,1 +1,10 @@
+# overall (cross-compatible)
 obj/
+
+# Linux
+src/debug/*
+!src/debug/*.c
+!src/debug/config/*.ini
+
+# windows
+src/debug/*.exe

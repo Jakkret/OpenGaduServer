@@ -1,60 +1,53 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "config.h"
-
-// Kod nie jest testowany, nie implementuj funkcji bez testowania.
-// Napisano 25.03.2026 - Jakkret
+#include "../server.h"
 
 /*
  * Cuts the string from a specific part.
  *
- * @param: string which is cut
- * @param: the character from where it is cut
- * @returns: string after the specific character
+ * @param str string which is cut
+ * @param Cut the character from where it is cut
+ * @returns string after the specific character
  * 
- * Note: code based off StackOverflow.
  */
-static char cutstr(char str, const char Cut){
-    char *p = str, token[256];
-
-    if((p = strchr(str, Cut))){
-        size_t len = strlen(++p);
-        if(len > 256 - 1){
-            fputs("error: string exceeds allowable length.\n", stderr);
-        }
-        memcpy(token, p, len + 1);
-    }
-    
-    return token;
+const char *cutstr(const char *str, char cut) {
+    const char *p = strchr(str, cut);
+    if (!p) return NULL;
+    return p + 1;
 }
 
 
-int ReadConfig(const char *filename){
+int ReadConfig(const char *filename, ServerConf *scHTTP, ServerConf *scCHAT){
     FILE *f = fopen(filename, "r");
     if(!f){
         LOG_ERR("CONFIG: Server could not load config: %s", filename);
         return -1;  // failed
     } 
 
-    char arg[256],
-        *p = arg;
-    while(fgets(arg, sizeof(arg), filename)){
-        if(strncmp(arg, "CHAT_IP=", 9) == 0){
-            
-            SCCHAT.IPaddr = cutstr(arg, "=");
-            // return 0;
-            
-        } else if(strncmp(arg, "CHAT_PORT=", 11) == 0){
-            SCCHAT.Port = cutstr(arg, "=");
+    char arg[256];
+    char symbol = '=';
+    while(fgets(arg, sizeof(arg), f)){
 
-        } else if(strncmp(arg, "HTTP_IP=", 9) == 0){
-            SCHTTP.IPaddr = cutstr(arg, "=");
+        arg[strcspn(arg, "\n")] = '\0';
 
-        } else if(strncmp(arg, "HTTP_PORT=", 11) == 0){
-            SCHTTP.Port = cutstr(arg, "=");
+        if(strncmp(arg, "CHAT_IP=", 8) == 0){
+            
+            scCHAT->IPaddr = strdup(cutstr(arg, symbol));
+            
+        } else if(strncmp(arg, "CHAT_PORT=", 10) == 0){
+            scCHAT->Port = strdup(cutstr(arg, symbol));
+
+        } else if(strncmp(arg, "HTTP_IP=", 8) == 0){
+            scHTTP->IPaddr = strdup(cutstr(arg, symbol));
+
+        } else if(strncmp(arg, "HTTP_PORT=", 10) == 0){
+            scHTTP->Port = strdup(cutstr(arg, symbol));
 
         }
     }
 
-    fclose(filename);
+    fclose(f);
+    return 0;
 }
