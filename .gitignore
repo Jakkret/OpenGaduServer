@@ -2,8 +2,8 @@
 obj/
 
 # Linux
-src/debug/*
-!src/debug/*.c
+src/debug/config/*
+!src/debug/config/*.c
 !src/debug/config/*.ini
 
 # windows
