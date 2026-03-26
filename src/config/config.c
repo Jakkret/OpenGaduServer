@@ -9,7 +9,7 @@
  *
  * @param str string which is cut
  * @param Cut the character from where it is cut
- * @returns string after the specific character
+ * @returns moved pointer after the specific character
  * 
  */
 const char *cutstr(const char *str, char cut) {
