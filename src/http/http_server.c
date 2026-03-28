@@ -3,6 +3,7 @@
 #include <string.h>
 #include "../server.h"
 #include "../platform.h"   // <-- fix: replaces direct socket includes
+#include "../config/config.h" // ReadConfig func
 
 void http_router(int klient_sock, char *method, char *path, char *query);
 
@@ -16,10 +17,14 @@ void* http_server_start(void* arg) {
     int opt = 1;
     setsockopt(server_sock, SOL_SOCKET, SO_REUSEADDR, (const char *)&opt, sizeof(opt));
 
+
+	// Read off config (src/config/config.c)
+	ReadConfig(CONFIG_FILENAME, &sCHAT, &sHTTP);
+
     struct sockaddr_in address = {
         .sin_family      = AF_INET,
-        .sin_port        = htons(PORT_HTTP),
-        .sin_addr.s_addr = inet_addr(HOST),
+        .sin_port        = htons(sHTTP.Port),
+        .sin_addr.s_addr = inet_addr(sHTTP.IPaddr),
     };
 
     if (bind(server_sock, (struct sockaddr*)&address, sizeof(address)) < 0) {

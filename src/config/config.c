@@ -12,14 +12,14 @@
  * @returns moved pointer after the specific character
  * 
  */
-const char *cutstr(const char *str, char cut) {
+static const char *cutstr(const char *str, char cut) {
     const char *p = strchr(str, cut);
     if (!p) return NULL;
     return p + 1;
 }
 
 
-int ReadConfig(const char *filename, ServerConf *scHTTP, ServerConf *scCHAT){
+int ReadConfig(const char *filename, ServerConf *scCHAT, ServerConf *scHTTP){
     FILE *f = fopen(filename, "r");
     if(!f){
         LOG_ERR("CONFIG: Server could not load config: %s", filename);
@@ -37,13 +37,13 @@ int ReadConfig(const char *filename, ServerConf *scHTTP, ServerConf *scCHAT){
             scCHAT->IPaddr = strdup(cutstr(arg, symbol));
             
         } else if(strncmp(arg, "CHAT_PORT=", 10) == 0){
-            scCHAT->Port = strdup(cutstr(arg, symbol));
+            scCHAT->Port = atoi(cutstr(arg, symbol));
 
         } else if(strncmp(arg, "HTTP_IP=", 8) == 0){
             scHTTP->IPaddr = strdup(cutstr(arg, symbol));
 
         } else if(strncmp(arg, "HTTP_PORT=", 10) == 0){
-            scHTTP->Port = strdup(cutstr(arg, symbol));
+            scHTTP->Port = atoi(cutstr(arg, symbol));
 
         }
     }

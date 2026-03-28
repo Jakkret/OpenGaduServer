@@ -11,6 +11,7 @@ SRCS = src/main.c \
 	   src/chat/handlers.c \
 	   src/chat/protocol.c \
 	   src/chat/chat_server.c \
+	   src/config/config.c \
        src/database/users.c
 
 # Detect OS
@@ -27,7 +28,6 @@ $(TARGET): $(SRCS)
 
 clean:
 	rm -f $(TARGET)
-env:
-    mkdir obj/
+
 
 .PHONY: clean

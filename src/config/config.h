@@ -1,11 +1,8 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-typedef struct {
-    const char *IPaddr;
-    const char *Port;
-} ServerConf;
+#include "../server.h"
 
-int ReadConfig(const char *filename, ServerConf *scHTTP, ServerConf *scCHAT);
+int ReadConfig(const char *filename, ServerConf *scCHAT, ServerConf *scHTTP);
 
 #endif

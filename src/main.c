@@ -5,9 +5,12 @@
 #include "database/users.h"
 #include "chat/protocol.h"
 #include "chat/client.h"
+#include "config/config.h"
 
 void* http_server_start(void* arg);
 void* chat_server_start(void* arg);
+
+ServerConf sHTTP, sCHAT;
 
 int main() {
     // Initialize platform (required on Windows for Winsock)
@@ -25,7 +28,7 @@ int main() {
 
     printf("\n");
     printf("  +------------------------------+\n");
-    printf("  |    Open Gadu Server 0.1.1    |\n");
+    printf("  |    Open Gadu Server 0.0.1    |\n");
     printf("  |    still in development      |\n");
     printf("  +------------------------------+\n");
 
@@ -37,20 +40,22 @@ int main() {
     printf("  +------------------------------+\n\n");
 
     thread_t thread_http, thread_chat;
+	
+	ReadConfig(CONFIG_FILENAME, &sCHAT, &sHTTP);
 
     if (thread_create(&thread_http, http_server_start, NULL) != 0) {
         LOG_ERR("Failed to start HTTP server thread");
         platform_cleanup();
         return 1;
     }
-    LOG_OK("HTTP server started on %s:%d", HOST, PORT_HTTP);
+    LOG_OK("HTTP server started on %s:%d", sHTTP.IPaddr, sHTTP.Port);
 
     if (thread_create(&thread_chat, chat_server_start, NULL) != 0) {
         LOG_ERR("Failed to start chat server thread");
         platform_cleanup();
         return 1;
     }
-    LOG_OK("Chat server started on %s:%d", HOST, PORT_CHAT);
+    LOG_OK("Chat server started on %s:%d", sCHAT.IPaddr, sCHAT.Port);
 
     LOG_INFO("Both servers running. Press Ctrl+C to stop.\n");
 

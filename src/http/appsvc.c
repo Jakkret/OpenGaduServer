@@ -3,6 +3,7 @@
 #include "../server.h"
 #include "../platform.h"
 #include "http_utils.h"   // <-- fix: uses thread-safe get_param
+#include "../config/config.h"
 
 /*
  *	TODO: direct v3.1 and v5 clients to chat server [partial]
@@ -70,8 +71,10 @@ void handle_appsvc(int sock, char *query, int version) {
 	 * więcej w blogu z dnia 22.03.2026
 	 */
 
+	ReadConfig(CONFIG_FILENAME, &sCHAT, &sHTTP);
+
     char body[64];
-    snprintf(body, sizeof(body), "0 0 %s %s\n", HOST, HOST_UNAVAIL);		
+    snprintf(body, sizeof(body), "0 0 %s %s\n", sHTTP.IPaddr, HOST_UNAVAIL);		
 	// currently it is:			  0 0 192.168.137.1 notoperating
 
     char response[256];

@@ -6,6 +6,7 @@
 #include "client.h"
 #include "protocol.h"
 #include "handlers.h"
+#include "../config/config.h"
 
 void* client_thread(void* arg) {
     client_t *c = (client_t*) arg;
@@ -58,11 +59,13 @@ void* chat_server_start(void* arg) {
 
     int opt = 1;
     setsockopt(server_sock, SOL_SOCKET, SO_REUSEADDR, (const char*)&opt, sizeof(opt));
+	
+	ReadConfig(CONFIG_FILENAME, &sCHAT, &sHTTP);
 
     struct sockaddr_in address = {
         .sin_family      = AF_INET,
-        .sin_port        = htons(PORT_CHAT),
-        .sin_addr.s_addr = inet_addr(HOST),
+        .sin_port        = htons(sCHAT.Port),
+        .sin_addr.s_addr = inet_addr(sCHAT.IPaddr),
     };
 
     if (bind(server_sock, (struct sockaddr*)&address, sizeof(address)) < 0) {
@@ -71,7 +74,7 @@ void* chat_server_start(void* arg) {
     }
 
     listen(server_sock, 10);
-    LOG_OK("CHAT: Listening on %s:%d", HOST, PORT_CHAT);
+    LOG_OK("CHAT: Listening on %s:%d", sCHAT.IPaddr, sCHAT.Port);
 
     while (1) {
         struct sockaddr_in client_addr;
