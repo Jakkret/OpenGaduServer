@@ -1,6 +1,8 @@
 #ifndef MESSAGING_H
 #define MESSAGING_H
 
-// TODO: make messaging.c and make chat functionality work
+#include "client.h"
 
-#endif MESSAGING_H
+int msg_handle_send(client_t *c, void *data, uint32_t len);
+
+#endif

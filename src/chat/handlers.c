@@ -7,6 +7,7 @@
 #include "../database/users.h"
 #include "client.h"
 #include "protocol.h"
+#include "messaging.h"
 #include "handlers.h"
 
 // show clients the change
@@ -229,6 +230,7 @@ static const gg_handler_t gg_handlers[] = {
 	{ GG_ADD_NOTIFY,	gg_notify_add_handler	 },
 	{ GG_REMOVE_NOTIFY, gg_notify_remove_handler },
     { GG_PING,          gg_ping_handler        	 },
+	{ GG_SEND_MSG,		msg_handle_send		 },
     { 0, NULL }
 };
 

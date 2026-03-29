@@ -10,6 +10,7 @@ SRCS = src/main.c \
 	   src/chat/client.c \
 	   src/chat/handlers.c \
 	   src/chat/protocol.c \
+	   src/chat/messaging.c \
 	   src/chat/chat_server.c \
 	   src/config/config.c \
        src/database/users.c
