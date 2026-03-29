@@ -39,12 +39,18 @@ Poczas pisania kodu, prosimy o trzymanie się angielskich nazewnictw np. funkcji
 ## 2. W czym mogę pomóc?
 Każda dodana linijka pomaga rozwojowi projektu, nawet jeśli to ogranicza się do poprawiania słów w dokumentacji. Na przykład możesz pomóc w:
 - **napisaniu dokumentacji** - choć istnieją dokumentacje jak libgadu, opisywanie działań serwera i starszych protokołów GG mogą się przydać bardzo... jeżeli deweloper będzie pisał jakieś dodatki
-- **Implementacji funkcji do serwera OGS** - Przecież sam serwer się nie napisze... ktoś musi zaimplementować funkcję żeby klient poprawnie reagował :P<br>
-		**Co musisz umieć?:**<br>
+- **Implementacje funkcji do OGS** - Przecież sam serwer się nie napisze... ktoś musi zaimplementować funkcję żeby klient poprawnie reagował :P<br>
+		**Co musisz umieć, by pisać implementacje serwerowe?:**<br>
 		możesz lekko opierać się na sztucznej inteligencji[^1]<br>
   		- język C,<br>
-		- winsock dla win32 lub socket + inne biblioteki dla GNU/linux[^2]
-  		- rozumieć jak używać dokumentacji i używać ją do implementacji<br>
+		- winsock dla win32 lub socket + inne biblioteki dla GNU/linux[^2]<br>
+  		- rozumieć jak używać dokumentacji i używać ją do implementacji<br><br>
+		**Q: A co jak umiem pythona?**<br>
+		To w sam raz! możesz wykonać przykładowe skrypty, które pomagają sprawdzić działanie klienta (przydatne, kiedy nie ma opcji używania dwóch klientów na raz :P). Na przykład możesz wykonać:
+		- Kliencką Papuge - sprawdzian, który odczyta wysłany do niej tekst, który potem będzie papugować
+		- Głuchy telefon - sprawdzian, który wykrywa że wiadomość została wysłana, ale odpisuje "Co?/Słucham?/Napisz jeszcze raz, bo nie umiem czytać!"
+		Lub jakieś minigierki w czacie.. masz duże pole do popisu!<br><br>
+		
 - **Sprawdzaniu działania Serwera na klientach GaduGadu** (wspierane wersje podane w README projektu) - Czyli innymi słowy alpha-/beta-tester samej kompilacji OGS. Osoby te, dostają gotową kompilacje od deweloperów, bądź dostają instrukcje do kompilacji[^3] 
 - **Badaniu reakcji klienta przez programy sprawdzające traffic sieciowy** - Takie programy, np. Wireshark pomagają w inspektowaniu reakcji klienta na serwer. Pomaga to podczas sprawdzania odpowiedzi klienta na pakiet - gdyż dokumentacje nie wspominają o różnicach każdej z wersji protokołu GG, musimy to robić sami -  i jest zabawa!
 - **Inspekcji Działania klienta dzięki narzędziom np. HxD** - jeżeli klient naprawdę skrywa sekrety, być może nadejdzie okazja by użyć disassemblera czy narzędzi tego typu.

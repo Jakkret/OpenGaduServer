@@ -5,6 +5,7 @@ obj/
 src/debug/config/*
 !src/debug/config/*.c
 !src/debug/config/*.ini
+!src/debug/*.txt
 
 # windows
 src/debug/*.exe
