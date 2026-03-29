@@ -26,6 +26,6 @@ W chwili obecnej, OpenGaduServer wspiera większość podstawowych funkcji:
     - [ ] resetowania hasła *(opcjonalne)*
     - [x] pakiet GG_WELCOME
     - [x] logowanie 
-    - [x] statusy  *(80% poprawnego działania)*
-	- [ ] funkcje czatu *(powoli w trakcie)*
+    - [x] statusy
+	- [x] funkcje czatu
 	- [ ] odbieranie listy kontaktów z/do serwera *(implementacja HTTP)*
