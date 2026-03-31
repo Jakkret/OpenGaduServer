@@ -3,6 +3,10 @@ GG 5.05 server debug script - registration and login test.
 Usage: python test_register_login.py [host] [http_port] [chat_port]
 """
 
+
+
+# NOTE: This is trash AI code. need to rewrite it later.#
+
 import socket
 import struct
 import sys
