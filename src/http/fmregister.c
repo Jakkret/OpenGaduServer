@@ -86,7 +86,7 @@ void handle_fmregister(int sock, char *query, int version) {
 
 			if(!email[0] || !pwd[0]){
 				LOG_WARN("FMREGISTER: Missing email or password");
-				http_send_response(sock, 400, "Bad Request", "Missing email or pwd parameter\n")
+				http_send_response(sock, 400, "Bad Request", "Missing email or pwd parameter\n");
 			}
 
 			// sprawdzaj czy hasło przewyższa limit 16 znaków
@@ -100,14 +100,14 @@ void handle_fmregister(int sock, char *query, int version) {
 			// zarejestruj do bazy danych
 			uin = db_register(email, pwd, NULL);
 
-			int body[64];
+			char body[64];
 			if(uin > 0){
 				snprintf(body, sizeof(body), "reg-success:%d\n", uin);
 				LOG_OK("FMREGISTER: Registered UIN %d for email %s", uin, email);
 				http_send_response(sock, 200, "OK", body);
 			} else {
 				LOG_WARN("FMREGISTER: email already registered: %s", email);
-				http_send_response(sock, 200, "OK", "error2\n")
+				http_send_response(sock, 200, "OK", "error2\n");
 			}
 
 			break;

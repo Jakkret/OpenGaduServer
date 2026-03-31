@@ -11,3 +11,4 @@ Klient:
 	- wysyłanie wiadomości po jakiejkolwiek wiadomości
 	- "Papuga" - skrypt powtarzający każdą wysłaną wiadomość
 	- zmiany statusu
+	- Czatbot oparty na ollama
