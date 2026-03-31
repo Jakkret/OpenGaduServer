@@ -8,6 +8,7 @@
 #include "handlers.h"
 #include "../config/config.h"
 
+// rozkładaj na wątki - obsługa wielu klientów
 void* client_thread(void* arg) {
     client_t *c = (client_t*) arg;
 

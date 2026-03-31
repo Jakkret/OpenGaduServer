@@ -14,14 +14,14 @@
  *	TODO: Support client v3.1 and v5 login.
  *	Prioritize v5 since its more documented
  *
- *	State: Dosen't work (16.03.2026)
+ *	State: works (31.03.2026)
  */
 
 void handle_fmregister(int sock, char *query, int version) {
 	int uin = 0;
 	char email[128]   = {0};
 	char pwd[64]      = {0};
-	char qa[256]	  = {0};
+	char qa[256]	  = {0};	// pytanie bezpieczeństwa - v5.0
 	char code[32]     = {0};
 
 	
@@ -36,11 +36,12 @@ void handle_fmregister(int sock, char *query, int version) {
 			get_param(query, "code", code, sizeof(code));
 			get_param(query, "qa", qa, sizeof(qa));
 			
-			LOG_INFO("FMREGISTER: received client request with code=%s", code);
+			// doprecyzuj, że to odbiera fmregister wersji 2 (fmregister2.asp)
+			LOG_INFO("FMREGISTER2: received client request with code=%s", code);
 			
 			    // Validate required fields
 			if (!qa[0] || !pwd[0]) {
-				LOG_WARN("FMREGISTER: Missing qa or pwd");
+				LOG_WARN("FMREGISTER2: Missing qa or pwd");
 				http_send_response(sock, 400, "Bad Request",
 					"Missing qa or pwd parameter\n");
 				return;
@@ -48,7 +49,7 @@ void handle_fmregister(int sock, char *query, int version) {
 			
 			// send error3 if pwd exceeds 16 characters
 			if (strlen(pwd) > MAX_PASSWORD_LEN) {
-				LOG_WARN("FMREGISTER: Password too long (%zu chars) for code: %d",
+				LOG_WARN("FMREGISTER2: Password too long (%zu chars) for code: %d",
 				strlen(pwd), code);
 				http_send_response(sock, 200, "OK", "error3\n");
 				return;
@@ -65,14 +66,50 @@ void handle_fmregister(int sock, char *query, int version) {
 		}	// end case for v5
 		
 		
-		case 3: {
+		case 3: {	// Wersja 3.1 build 25
 			
 		    char email[128]   = {0};	// v3.1
 			char tokenid[64]  = {0};	// v3.1
 			char tokenval[32] = {0};	// v3.1
 			
-			// TODO: later implement support for v3.1 protocol
-			LOG_WARN("FMREGISTER: GG 3.x not yet implemented");
+			get_param(query, "email", email, sizeof(email));
+			get_param(query, "pwd", pwd, sizeof(pwd));
+			get_param(query, "code", code, sizeof(code));	// chyba jedynie używany w pubdir
+
+			// bezużyteczne. 
+			get_param(query, "tokenid", tokenid, sizeof(tokenid));
+			get_param(query, "tokenval", tokenval, sizeof(tokenval));
+
+			LOG_INFO("FMREGISTER: User registered, email=%s, code=%s",
+				email[0] ? email : "?",
+				code[0] ? code : "?");
+
+			if(!email[0] || !pwd[0]){
+				LOG_WARN("FMREGISTER: Missing email or password");
+				http_send_response(sock, 400, "Bad Request", "Missing email or pwd parameter\n")
+			}
+
+			// sprawdzaj czy hasło przewyższa limit 16 znaków
+			if (strlen(pwd) > MAX_PASSWORD_LEN) {
+				LOG_WARN("FMREGISTER2: Password too long (%zu chars) for code: %d",
+				strlen(pwd), code);
+				http_send_response(sock, 200, "OK", "error3\n");
+				return;
+			}
+
+			// zarejestruj do bazy danych
+			uin = db_register(email, pwd, NULL);
+
+			int body[64];
+			if(uin > 0){
+				snprintf(body, sizeof(body), "reg-success:%d\n", uin);
+				LOG_OK("FMREGISTER: Registered UIN %d for email %s", uin, email);
+				http_send_response(sock, 200, "OK", body);
+			} else {
+				LOG_WARN("FMREGISTER: email already registered: %s", email);
+				http_send_response(sock, 200, "OK", "error2\n")
+			}
+
 			break;
 		}
 		
