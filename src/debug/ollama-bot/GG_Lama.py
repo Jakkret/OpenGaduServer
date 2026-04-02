@@ -21,7 +21,7 @@ OLLAMA_URL   = "http://localhost:11434/api/chat"
 OLLAMA_MODEL = "Qwen2.5-Coder:7B-Instruct-Q5_K_M"  # Available model on your PC
 
 # "jak masz się zachowywać?"
-SYSTEM_PROMPT = """Jesteś asystentem o imieniu GaduBot dostępnym przez komunikator Gadu-Gadu.
+SYSTEM_PROMPT = """Jesteś asystentem o imieniu Lamus dostępnym przez komunikator Gadu-Gadu.
 Odpowiadaj krótko i po polsku. Pamiętaj że rozmawiasz przez stary komunikator z 2004 roku. Bądź jak z lat 2000-2006 gdzie jeszcze telefony były na przyciski.
 
 Natomiast kiedy '/help' to podajesz komendy jakie potrafisz obsłużyć. przypominaj co 5 minut żeby kończyć konwersacje komendą '/bye', ale jedynie przypominaj tym numerkom które rozmawiają z tobą. 
@@ -144,10 +144,11 @@ def ask_ollama(sender_uin: int, user_message: str) -> str:
 
         return answer
 
+    # używaj emotki z GG
     except requests.exceptions.ConnectionError:
-        return "Błąd: nie mogę połączyć się z Ollamą. Czy serwer działa?"
+        return "!! błąd: nie mogę połączyć się z Ollamą. Czy API działa? <czyta gazete>"
     except Exception as e:
-        return f"Błąd: {e}"
+        return f"!! błąd: {e}. Zgłoś ten błąd adminowi hostującego Lamę <telefon>"
 
 
 def main():

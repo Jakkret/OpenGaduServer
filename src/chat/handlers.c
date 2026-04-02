@@ -36,7 +36,7 @@ void changed_status(client_t *c) {
 }
 
 // Login handler for v5
-static int gg_login_handler(client_t *c, void *data, uint32_t len) {
+static int gg_login50_handler(client_t *c, void *data, uint32_t len) {
     if (len < sizeof(gg_login5_t)) return -2;
     if (c->state != STATE_LOGIN) {
         LOG_WARN("HANDLER: gg_login_handler() unexpected state %d", c->state);
@@ -72,6 +72,52 @@ static int gg_login_handler(client_t *c, void *data, uint32_t len) {
     write_full_packet(c, GG_LOGIN_OK, NULL, 0);
 	changed_status(c);
 
+    return 0;
+}
+
+// Logowanie dla wersji 6.x
+static int gg_login60_handler(client_t *c, void *data, uint32_t len) {
+    if (len < sizeof(gg_login60_t)) return -2;
+    if (c->state != STATE_LOGIN) {
+        LOG_WARN("HANDLER: gg_login60_handler() unexpected state %d", c->state);
+        return -3;
+    }
+
+    gg_login60_t *l = (gg_login60_t *)data;
+
+    LOG_INFO("HANDLER: Login60 attempt from UIN %u (version=0x%08X)", l->uin, l->version);
+
+    if (!authorize(l->uin, c->seed, l->hash)) {
+        LOG_WARN("HANDLER: Login60 FAILED for UIN %u", l->uin);
+        write_full_packet(c, GG_LOGIN_FAILED, NULL, 0);
+        c->remove = 1;
+        return -1;
+    }
+
+    client_t *old = client_find(l->uin);
+    if (old) {
+        LOG_WARN("HANDLER: Duplicate client UIN %u, removing old", l->uin);
+        write_full_packet(old, GG_DISCONNECTING, NULL, 0);
+        old->remove = 1;
+    }
+
+    c->uin        = l->uin;
+    c->state      = STATE_LOGIN_OK;
+    c->status     = GG_STATUS_AVAIL;
+    c->version    = l->version;
+    c->image_size = l->image_size;
+    c->timeout    = time(NULL) + TIMEOUT_DEFAULT;
+
+    LOG_OK("HANDLER: Login60 OK for UIN %u", c->uin);
+    write_full_packet(c, GG_LOGIN_OK, NULL, 0);
+    changed_status(c);
+
+    return 0;
+}
+
+// gg_userlist_request dla 6.x, ignorowane
+static int gg_userlist_request_handler(client_t *c, void *data, uint32_t len) {
+    LOG_INFO("HANDLER: UIN %u requested userlist (not supported yet)", c->uin);
     return 0;
 }
 
@@ -222,9 +268,11 @@ static int gg_ping_handler(client_t *c, void *data, uint32_t len) {
 
 // handler table instead of big switch statement
 static const gg_handler_t gg_handlers[] = {
-    { GG_LOGIN5,        gg_login_handler		 },
+    { GG_LOGIN50,       gg_login50_handler		 },
+	{ GG_LOGIN60,		gg_login60_handler		 },
     { GG_NOTIFY_FIRST,  gg_notify_handler		 },
     { GG_NOTIFY_LAST,   gg_notify_end_handler	 },
+	{ GG_USERLIST_REQUEST, gg_userlist_request_handler },
     { GG_LIST_EMPTY,    gg_list_empty_handler	 },
     { GG_NEW_STATUS,    gg_new_status_handler	 },
 	{ GG_ADD_NOTIFY,	gg_notify_add_handler	 },
