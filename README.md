@@ -31,10 +31,10 @@ W chwili obecnej, OpenGaduServer wspiera większość podstawowych funkcji:
 	- [ ] odbieranie listy kontaktów z/do serwera *(implementacja HTTP)*
 	
 - [x] Gadu Gadu 6.0: _(dla JaduGadu... bo używa logowania GG_LOGIN60)_
-    - [] rejestrowanie i przekierowanie do serwera
-    - [] resetowania hasła *(opcjonalne)*
+    - [ ] rejestrowanie i przekierowanie do serwera
+    - [ ] resetowania hasła *(opcjonalne)*
     - [x] pakiet GG_WELCOME (wraz z 5.0)
     - [x] logowanie
     - [x] statusy
 	- [x] funkcje czatu
-	- [] odbieranie listy kontaktów z/do serwera *(implementacja według GG - GG_USERLIST_REQUEST)*
+	- [ ] odbieranie listy kontaktów z/do serwera *(implementacja według GG - GG_USERLIST_REQUEST)*

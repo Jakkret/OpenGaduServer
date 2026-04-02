@@ -33,7 +33,13 @@ void http_router(int client_sock, char *method, char *path, char *query) {
 	} else if (strcmp(path, "/appsvc/fmregister.asp") == 0) {
         handle_fmregister(client_sock, query, 3);
 		
-	}else if (strcmp(path, "/getbanner.asp") == 0 ) {
+	} if (strcmp(path, "/appsvc/appmsg.asp") == 0) {
+        handle_appsvc(client_sock, query, 3);
+
+	// fmregister2.asp - v5 version request
+	// fmregister.asp - v3.1 version request
+	
+    }else if (strcmp(path, "/getbanner.asp") == 0 ) {
 		
 		// serve a gif banner to client - experimental
 		//
