@@ -7,8 +7,5 @@ serwer/klient
 ------ Jakie skrypty są potrzebne? -------
 
 Klient:
-	- logowanie się
-	- wysyłanie wiadomości po jakiejkolwiek wiadomości
-	- "Papuga" - skrypt powtarzający każdą wysłaną wiadomość
-	- zmiany statusu
-	- Czatbot oparty na ollama
+	- "Papuga" - skrypt powtarzający każdą wysłaną wiadomość (w GG_Lama.py)
+	- Czatbot oparty na ollama [UDANE]
