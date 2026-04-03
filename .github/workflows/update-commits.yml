@@ -1,5 +1,5 @@
 # .github/workflows/update-commits.yml
-name: Update commits
+name: Update commits and copy files
 
 on:
   push:
@@ -16,6 +16,7 @@ jobs:
       
       - name: Generate commit/ogs-commit.html
         run: |
+          touch commit/ogs-commit.html
           echo "<table border='0' cellpadding='4' cellspacing='0' width='100%'>" > commit/ogs-commit.html
           git log -5 --pretty=format:"<tr><td class='txt' style='font-family: Arial, Verdana, sans-serif; font-size:12px; border-bottom:1px solid #eee;'><span style='color:#999;'>OGS - %ad</span><br><a href='https://github.com/Jakkret/website/commit/%H' class='more1'>%s</a></td></tr>" --date=short >> commit/ogs-commit.html
           echo "</table>" >> commit/ogs-commit.html
@@ -27,3 +28,28 @@ jobs:
           git add commit/ogs-commit.html
           git commit -m "Auto: update commits" || exit 0
           git push
+          
+                  
+      - name: Checkout Jakkret/website repo
+        uses: actions/checkout@v4
+        with:
+            repository: 'Jakkret/website'
+            path: 'website'    
+                    
+      - name: Checkout Jakkret/OpenGaduServer repo
+        uses: actions/checkout@v4
+        with:
+            repository: 'Jakkret/OpenGaduServer'
+            path: 'OpenGaduServer'
+                    
+      - name: copy ogs-commit.html from OGS to website
+        run: cp OpenGaduServer/commit/ogs-commit.html website/docs/ogs-commit.html
+               
+      - name: git commands
+        run: |
+                cd website
+                git config user.name "github-actions"
+                git config user.email "actions@github.com"
+                git add docs/ogs-commit.html
+                git commit -m "AUTO: add ogs-commit.html"
+                git push
