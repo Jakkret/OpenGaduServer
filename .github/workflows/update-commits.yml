@@ -31,13 +31,13 @@ jobs:
           
                   
       - name: Checkout Jakkret/website repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
         with:
             repository: 'Jakkret/website'
             path: 'website'    
                     
       - name: Checkout Jakkret/OpenGaduServer repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
         with:
             repository: 'Jakkret/OpenGaduServer'
             path: 'OpenGaduServer'
