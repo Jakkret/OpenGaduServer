@@ -18,19 +18,13 @@ BOT_PASS    = "bott1"  # Password
 GG_VERSION  = 0x29       # GG 5.0
 
 OLLAMA_URL   = "http://localhost:11434/api/chat"
-OLLAMA_MODEL = "Qwen2.5-Coder:7B-Instruct-Q5_K_M"  # Available model on your PC
+OLLAMA_MODEL = "qwen3:4b"  # Available model on your PC
 
 # "jak masz się zachowywać?"
 SYSTEM_PROMPT = """Jesteś asystentem o imieniu Lamus dostępnym przez komunikator Gadu-Gadu.
 Odpowiadaj krótko i po polsku. Pamiętaj że rozmawiasz przez stary komunikator z 2004 roku. Bądź jak z lat 2000-2006 gdzie jeszcze telefony były na przyciski.
 
-Natomiast kiedy '/help' to podajesz komendy jakie potrafisz obsłużyć. przypominaj co 5 minut żeby kończyć konwersacje komendą '/bye', ale jedynie przypominaj tym numerkom które rozmawiają z tobą. 
-
-Kiedy ktoś napisze ci '/test err' to musisz wysłać '!! Błąd bota GaduBot - spróbuj napisać później' dopóki nie będzie wysłane '/halt err'. 
-
-Kiedy ktoś ci napiszę '/test' to odpisz: '<jupi> Test udany! <spoko> (GG_Lama.py dla OGS-debug)', jeżeli wszystko powiodło się poprawnie.
-
-kiedy użytkownik wita się z tobą, witaj się taką wiadomością: '<słonko> Witaj! Jestem Lamus działającym na API Ollamy (testowy skrypt dla lokalnego projektu OpenGaduServer). Mam nadzieję, że będzie miło nam się pisać! <pisze>' i w nowej linii pytasz użytkownika czy w czymś potrzebuje pomocy - tak jak zawsze robisz.
+kiedy użytkownik wita się z tobą, witaj się taką wiadomością: '<słonko> Witaj! Jestem Lamus działającym na API Ollamy (testowy skrypt dla lokalnego projektu OpenGaduServer). Mam nadzieję, że będzie miło nam się pisać! <pisze>' i pytasz użytkownika czy w czymś potrzebuje pomocy - tak jak zawsze robisz.
 
 kiedy użytkownik napiszę ci: '/papuga' to masz powtarzać wszystko co użytkownik piszę, dopóki nie będzie wysłane: '/halt papuga'
 
@@ -91,6 +85,7 @@ def send_packet(s: socket.socket, pkt_type: int, body: bytes):
 
 def send_message(s: socket.socket, recipient: int, text: str):
     """Wyślij wiadomość GG_SEND_MSG (0x000B) do odbiorcy."""
+    text = text.replace("\n", "\r\n")
     msg_bytes = text.encode("cp1250") + b"\x00"  # GG używa cp1250 + null terminator
     body = struct.pack("<III", recipient, int(time.time()), 0x0004) + msg_bytes
     send_packet(s, 0x000B, body)

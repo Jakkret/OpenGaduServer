@@ -1,0 +1,29 @@
+# .github/workflows/update-commits.yml
+name: Update commits
+
+on:
+  push:
+    branches: [main]
+    
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Generate docs/commits.html
+        run: |
+          echo "<table border='0' cellpadding='4' cellspacing='0' width='100%'>" > commit/ogs-commit.html
+          git log -5 --pretty=format:"<tr><td class='txt' style='font-family: Arial, Verdana, sans-serif; font-size:12px; border-bottom:1px solid #eee;'><span style='color:#999;'>OGS - %ad</span><br><a href='https://github.com/Jakkret/website/commit/%H' class='more1'>%s</a></td></tr>" --date=short >> commit/ogs-commit.html
+          echo "</table>" >> commit/ogs-commit.html
+      
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add docs/commits.html
+          git commit -m "Auto: update commits" || exit 0
+          git push
