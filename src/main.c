@@ -29,7 +29,7 @@ int main() {
     printf("\n");
     printf("  +------------------------------+\n");
     printf("  |    Open Gadu Server 0.0.1    |\n");
-    printf("  |    still in development      |\n");
+    printf("  |    First Public Release      |\n");
     printf("  +------------------------------+\n");
 
 #ifdef PLATFORM_WINDOWS

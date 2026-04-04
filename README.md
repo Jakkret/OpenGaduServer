@@ -13,13 +13,7 @@ Jak chcesz wydać commit do tego repozytorium - **obczaj CONTRIBUTING.MD** - Wi�
 > Ten projekt jest w stanie rozwojowym. Nie oczekuj, że wszystko działa od tak - W tej chwili mimo, że funkcje poniżej są podane, nie znaczy że działają w 100%. Więcej funkcji nadejdzie w późniejszych poprawkach.
 
 W chwili obecnej, OpenGaduServer wspiera większość podstawowych funkcji:
-- [ ] Gadu Gadu 3.1: (opcjonalnie)
-    - [ ] rejestrowanie i przekierowanie do serwera
-    - [ ] resetowania hasła
-    - [x] pakiet GG_WELCOME (wraz z innymi)
-    - [ ] logowanie 
-    - [ ] statusy
-	- [ ] funkcje czatu
+- [ ] Gadu Gadu 3.1: (niemożliwe do implementacji)
 
 - [x] Gadu Gadu 5.0:
     - [x] rejestrowanie i przekierowanie do serwera
@@ -28,13 +22,13 @@ W chwili obecnej, OpenGaduServer wspiera większość podstawowych funkcji:
     - [x] logowanie 
     - [x] statusy
 	- [x] funkcje czatu
-	- [ ] odbieranie listy kontaktów z/do serwera *(implementacja HTTP)*
+	- [X] odbieranie listy kontaktów z/do serwera
 	
 - [x] Gadu Gadu 6.0: _(dla JaduGadu... bo używa logowania GG_LOGIN60)_
-    - [ ] rejestrowanie i przekierowanie do serwera
+    - [ ] rejestrowanie i przekierowanie do serwera *(opcjonalne)*
     - [ ] resetowania hasła *(opcjonalne)*
     - [x] pakiet GG_WELCOME (wraz z 5.0)
     - [x] logowanie
     - [x] statusy
 	- [x] funkcje czatu
-	- [ ] odbieranie listy kontaktów z/do serwera *(implementacja według GG - GG_USERLIST_REQUEST)*
+	- [x] odbieranie listy kontaktów z/do serwera *(implementacja według GG - GG_USERLIST_REQUEST)*
