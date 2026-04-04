@@ -35,7 +35,8 @@ int msg_handle_send(client_t *c, void *data, uint32_t len) {
 		return -1;
 	}
 	
-	LOG_INFO("MSG: UIN %u -> UIN %u \"%s\"", c->uin, hdr->recipient, text);
+	// trochę prywatności!
+	LOG_INFO("MSG: UIN %u -> UIN %u", c->uin, hdr->recipient);
 	
 	client_t *recipient = client_find(hdr->recipient);
 	

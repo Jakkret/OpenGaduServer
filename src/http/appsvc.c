@@ -42,8 +42,6 @@ void handle_appsvc(int sock, char *query, int version) {
 			
 			char lastbanner[32] = {0};
 			
-			// TODO: add support for v3.1
-			
 			// based off what wireshark said about GG 3.1's GET request
 			get_param(query, "fmnumber", fmnumber,  sizeof(fmnumber));	// here lies the UIN
 			get_param(query, "lastbanner",  lastbanner, sizeof(lastbanner));	// whatever this is
@@ -53,6 +51,26 @@ void handle_appsvc(int sock, char *query, int version) {
 				lastbanner[0] ? lastbanner : "?"
 			);
 			
+			
+			// podanie adresu w stylu 3.1 - jednoadresowiec
+			
+			ReadConfig(CONFIG_FILENAME, &sCHAT, &sHTTP);
+
+			char body[64];
+			snprintf(body, sizeof(body), "0 0 %s:%d %s\n", sCHAT.IPaddr ,sCHAT.Port, sCHAT.IPaddr);		
+			// currently it is:			  0 0 192.168.137.1:8074
+
+			char response[256];
+			snprintf(response, sizeof(response),
+					"HTTP/1.0 200 OK\r\n"
+					"Connection: close\r\n"
+					"\r\n"
+					"%s", body
+			);
+
+			send(sock, response, strlen(response), 0);
+			LOG_OK("APPSVC: Sent chat server address to client %s", fmnumber[0] ? fmnumber : "?");
+			return;
 			break;
 		}
 		default:
@@ -74,7 +92,7 @@ void handle_appsvc(int sock, char *query, int version) {
 	ReadConfig(CONFIG_FILENAME, &sCHAT, &sHTTP);
 
     char body[64];
-    snprintf(body, sizeof(body), "0 0 %s %s\n", sHTTP.IPaddr, HOST_UNAVAIL);		
+    snprintf(body, sizeof(body), "0 0 %s %s\n", sCHAT.IPaddr, HOST_UNAVAIL);		
 	// currently it is:			  0 0 192.168.137.1 notoperating
 
     char response[256];

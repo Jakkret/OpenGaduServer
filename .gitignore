@@ -2,9 +2,10 @@
 obj/
 
 # Linux
-src/debug/config/*
+src/debug/*
 !src/debug/config/*.c
 !src/debug/config/*.ini
+!src/debug/ollama-bot/*.py
 !src/debug/*.txt
 
 # windows

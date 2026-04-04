@@ -22,7 +22,23 @@
 #define GG_NOTIFY_REPLY				 0x000c
 #define GG_ADD_NOTIFY       		 0x000d
 #define GG_REMOVE_NOTIFY    		 0x000e
+
+// v6.0
 #define GG_USERLIST_REQUEST 		 0x0016
+#define GG_USERLIST_REPLY        	 0x0010
+
+	// types (for gg_userlist_request_t -> uint8_type)
+#define GG_USERLIST_PUT         0x00
+#define GG_USERLIST_PUT_MORE	0x01
+#define GG_USERLIST_GET         0x02
+
+	// types (for gg_userlist_reply_t -> uint8_type)
+#define GG_USERLIST_PUT_REPLY   	 0x00
+#define GG_USERLIST_PUT_MORE_REPLY   0x02
+#define GG_USERLIST_GET_REPLY   	 0x06
+#define GG_USERLIST_GET_MORE_REPLY   0x04
+
+// ...
 
 // types (for gg_notify_t -> int type)
 #define GG_USER_BUDDY			0x0001
@@ -52,7 +68,7 @@
 #define GG_STATUS_AVAIL_DESCR    	 0x0004
 #define GG_STATUS_BUSY_DESCR     	 0x0005
 #define GG_STATUS_FRIENDS_MASK   	 0x8000
-#define GG_STATUS_VOICE_MASK     	 0x0200
+// #define GG_STATUS_VOICE_MASK     	 0x0200
 
 // Message classes
 #define GG_CLASS_MSG        		 0x0004
@@ -73,6 +89,12 @@ typedef struct {
 typedef struct {
     uint32_t seed;
 } GG_PACKED gg_welcome_t;
+
+typedef struct {
+    uint32_t uin;
+    uint32_t hash;
+    uint32_t status;
+} GG_PACKED gg_login3_t;
 
 typedef struct {
     uint32_t uin;
@@ -139,6 +161,14 @@ typedef struct {
     uint32_t uin;
     uint8_t  type;
 } GG_PACKED gg_add_remove_t;
+
+typedef struct {
+	uint8_t type;
+} GG_PACKED gg_userlist_request_t;
+
+typedef struct {
+	uint8_t type;
+} GG_PACKED gg_userlist_reply_t;
 
 uint32_t generate_seed();
 unsigned int gg_login_hash(const unsigned char *password, uint32_t seed);

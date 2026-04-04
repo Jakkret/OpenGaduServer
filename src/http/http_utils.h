@@ -14,5 +14,7 @@ void url_decode(char *dst, const char *src, int dst_size);
 // Send a plain HTTP response
 void http_send_response(int sock, int status_code, const char *status_text,
                         const char *body);
+						
+void http_send_html(int sock, int status_code, const char *status_text, const char *body);
 
 #endif // HTTP_UTILS_H

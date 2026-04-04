@@ -28,7 +28,7 @@ void* http_server_start(void* arg) {
     };
 
     if (bind(server_sock, (struct sockaddr*)&address, sizeof(address)) < 0) {
-        LOG_ERR("HTTP: bind() failed — do you need sudo?");
+        LOG_ERR("HTTP: bind() failed — you might need sudo");
         return NULL;
     }
 

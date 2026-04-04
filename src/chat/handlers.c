@@ -35,6 +35,47 @@ void changed_status(client_t *c) {
     }
 }
 
+
+
+// Login handler for v5
+static int gg_login31_handler(client_t *c, void *data, uint32_t len) {
+    if (len < sizeof(gg_login3_t)) return -2;
+    if (c->state != STATE_LOGIN) {
+        LOG_WARN("HANDLER: gg_login_handler() unexpected state %d", c->state);
+        return -3;
+    }
+
+    gg_login3_t *l = (gg_login3_t*) data;
+
+    LOG_INFO("HANDLER: Login attempt from UIN %u", l->uin);
+
+    if (!authorize(l->uin, c->seed, l->hash)) {
+        LOG_WARN("HANDLER: Login FAILED for UIN %u", l->uin);
+        write_full_packet(c, GG_LOGIN_FAILED, NULL, 0);
+        c->remove = 1;
+        return -1;
+    }
+
+    // duplikat — rozłącz stare połączenie
+    client_t *old = client_find(l->uin);
+    if (old) {
+        LOG_WARN("HANDLER: Duplicate client UIN %u, removing old", l->uin);
+        write_full_packet(old, GG_DISCONNECTING, NULL, 0);
+        old->remove = 1;
+    }
+
+    c->uin     = l->uin;
+    c->state   = STATE_LOGIN_OK;
+    c->status  = GG_STATUS_AVAIL;	// od razu pokazuj dostępność po zalogowaniu
+    c->timeout = time(NULL) + TIMEOUT_DEFAULT;
+
+    LOG_OK("HANDLER: Login OK for UIN %u", c->uin);
+    write_full_packet(c, GG_LOGIN_OK, NULL, 0);
+	changed_status(c);
+
+    return 0;
+}
+
 // Login handler for v5
 static int gg_login50_handler(client_t *c, void *data, uint32_t len) {
     if (len < sizeof(gg_login5_t)) return -2;
@@ -115,11 +156,8 @@ static int gg_login60_handler(client_t *c, void *data, uint32_t len) {
     return 0;
 }
 
-// gg_userlist_request dla 6.x, ignorowane
-static int gg_userlist_request_handler(client_t *c, void *data, uint32_t len) {
-    LOG_INFO("HANDLER: UIN %u requested userlist (not supported yet)", c->uin);
-    return 0;
-}
+
+
 
 // First Notify Handler (gg_notify_first)
 static int gg_notify_handler(client_t *c, void *data, uint32_t len) {
@@ -266,8 +304,35 @@ static int gg_ping_handler(client_t *c, void *data, uint32_t len) {
     return 0;
 }
 
+// gg_userlist_request dla 6.x, ignorowane
+static int gg_userlist_request_handler(client_t *c, void *data, uint32_t len) {
+    if (c->state != STATE_LOGIN_OK) return -3;
+    if (len < sizeof(gg_userlist_request_t)) return -2;
+
+    gg_userlist_request_t *r = (gg_userlist_request_t *)data;
+
+    if (r->type == GG_USERLIST_GET) {
+        LOG_INFO("HANDLER: UIN %u requests userlist", c->uin);
+		
+        // odsyłamy pustą listę
+        uint8_t reply_type = GG_USERLIST_GET_REPLY;
+		write_full_packet(c, GG_USERLIST_REPLY, &reply_type, sizeof(reply_type));
+		
+    } else if (r->type == GG_USERLIST_PUT || r->type == GG_USERLIST_PUT_MORE) {
+		
+		// klient wysyła listę - to się kiedyś obsłuży
+		uint8_t reply_type = GG_USERLIST_PUT_REPLY;
+		write_full_packet(c, GG_USERLIST_REPLY, &reply_type, sizeof(reply_type));
+	} else {
+        LOG_WARN("HANDLER: UIN %u unknown userlist type 0x%02X", c->uin, r->type);
+    }
+
+    return 0;
+}
+
 // handler table instead of big switch statement
 static const gg_handler_t gg_handlers[] = {
+    { GG_LOGIN31,       gg_login31_handler		 },
     { GG_LOGIN50,       gg_login50_handler		 },
 	{ GG_LOGIN60,		gg_login60_handler		 },
     { GG_NOTIFY_FIRST,  gg_notify_handler		 },

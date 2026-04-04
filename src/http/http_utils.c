@@ -55,3 +55,17 @@ void http_send_response(int sock, int status_code, const char *status_text,
     );
     send(sock, response, strlen(response), 0);
 }
+
+// dla dodania pseudo-reklam
+void http_send_html(int sock, int status_code, const char *status_text, const char *body) {
+    char header[256];
+    snprintf(header, sizeof(header),
+        "HTTP/1.0 %d %s\r\n"
+        "Content-Type: text/html\r\n"
+        "Connection: close\r\n"
+        "\r\n",
+        status_code, status_text
+    );
+    send(sock, header, strlen(header), 0);
+    send(sock, body, strlen(body), 0);  // body wysyłane osobno - bez limitu bufora
+}
