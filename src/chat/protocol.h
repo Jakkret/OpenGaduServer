@@ -9,6 +9,7 @@
 #define GG_LOGIN31           		 0x0001  // GG 3.1
 #define GG_LOGIN50          		 0x000c  // GG 5.x
 #define GG_LOGIN60					 0x0015  // GG 6.x i JaduGadu dla Java
+#define GG_LOGIN70					 0x0019
 #define GG_LOGIN_OK         		 0x0003
 #define GG_LOGIN_FAILED     		 0x0009
 #define GG_DISCONNECTING    		 0x000d
@@ -118,6 +119,22 @@ typedef struct {
     uint8_t  image_size;
     uint8_t  dunno2;        // 0xbe
 } GG_PACKED gg_login60_t;
+
+
+typedef struct {
+	uint32_t uin;
+	uint8_t hash_type;
+	uint8_t hash[64];
+	uint32_t status;
+	uint32_t version;
+	uint8_t dunno1;			/* 0x00 */
+	uint32_t local_ip;
+	uint16_t local_port;
+	uint32_t external_ip;
+	uint16_t external_port;
+	uint8_t image_size;		 /* KiB */
+	uint8_t dunno2;			/* 0xbe */
+} GG_PACKED gg_login70_t;
 
 typedef struct {
     uint32_t uin;
