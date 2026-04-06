@@ -9,7 +9,12 @@
 #define GG_LOGIN31           		 0x0001  // GG 3.1
 #define GG_LOGIN50          		 0x000c  // GG 5.x
 #define GG_LOGIN60					 0x0015  // GG 6.x i JaduGadu dla Java
-#define GG_LOGIN70					 0x0019
+#define GG_LOGIN70					 0x0019	 // GG 7.0
+
+// typy hash dla 7.0 (gg_login70_t -> hash)
+#define GG_LOGIN_HASH_GG32 0x01
+#define GG_LOGIN_HASH_SHA1 0x02
+
 #define GG_LOGIN_OK         		 0x0003
 #define GG_LOGIN_FAILED     		 0x0009
 #define GG_DISCONNECTING    		 0x000d
@@ -190,5 +195,6 @@ typedef struct {
 uint32_t generate_seed();
 unsigned int gg_login_hash(const unsigned char *password, uint32_t seed);
 int authorize(uint32_t uin, uint32_t seed, uint32_t hash);
+int authorize70(uint32_t uin, uint32_t seed, uint8_t *response);
 
 #endif

@@ -156,7 +156,70 @@ static int gg_login60_handler(client_t *c, void *data, uint32_t len) {
     return 0;
 }
 
+// Logowanie dla wersji 6.x
+static int gg_login70_handler(client_t *c, void *data, uint32_t len) {
+    if (len < sizeof(gg_login70_t)) return -2;
+    if (c->state != STATE_LOGIN) {
+        LOG_WARN("HANDLER: gg_login70_handler() unexpected state %d", c->state);
+        return -3;
+    }
 
+    gg_login70_t *l = (gg_login70_t *)data;
+
+    LOG_INFO("HANDLER: Login70 attempt from UIN %u (version=0x%08X)", l->uin, l->version);
+
+	// wybierz typ hash
+	switch(l->hash_type){
+		// prestarzały hash GG32 
+		case GG_LOGIN_HASH_GG32: {
+			LOG_INFO("HANDLER: UIN %u requested GG32 hashing", l->uin);
+			
+			if(!authorize(l->uin, c->seed, (uint32_t)l->hash)){
+				LOG_WARN("HANDLER: Login70(GG32) FAILED for UIN %u", l->uin);
+				write_full_packet(c, GG_LOGIN_FAILED, NULL, 0);
+				c->remove = 1;
+				return -1;
+			}
+			break;
+		}
+		// sha1
+		case GG_LOGIN_HASH_SHA1: {
+			LOG_INFO("HANDLER: UIN %u requested SHA1 hashing", l->uin);
+			
+			if(!authorize70(l->uin, c->seed, l->hash)){
+				LOG_WARN("HANDLER: Login70(SHA1) FAILED for UIN %u", l->uin);
+				write_full_packet(c, GG_LOGIN_FAILED, NULL, 0);
+				c->remove = 1;
+				return -1;
+			}
+			break;
+		}
+		default:
+			LOG_WARN("HANDLER: Unknown hash_type: 0x%02X", l->hash_type);
+			return -1;
+	}
+
+	// wsparcie dla multilogowania dopiero w GG 8.0 ... daleko.
+    client_t *old = client_find(l->uin);
+    if (old) {
+        LOG_WARN("HANDLER: Duplicate client UIN %u, removing old", l->uin);
+        write_full_packet(old, GG_DISCONNECTING, NULL, 0);
+        old->remove = 1;
+    }
+
+    c->uin        = l->uin;
+    c->state      = STATE_LOGIN_OK;
+    c->status     = GG_STATUS_AVAIL;
+    c->version    = l->version;
+    c->image_size = l->image_size;
+    c->timeout    = time(NULL) + TIMEOUT_DEFAULT;
+
+    LOG_OK("HANDLER: Login70 OK for UIN %u", c->uin);
+    write_full_packet(c, GG_LOGIN_OK, NULL, 0);
+    changed_status(c);
+
+    return 0;
+}
 
 
 // First Notify Handler (gg_notify_first)
@@ -252,7 +315,6 @@ static int gg_new_status_handler(client_t *c, void *data, uint32_t len) {
              c->uin, c->status, c->status_descr ? c->status_descr : "");
 
     // powiadom kontakty
-    // TODO: changed_status(c)
 	changed_status(c);
 
     // rozłącz jeśli niedostępny
@@ -335,6 +397,7 @@ static const gg_handler_t gg_handlers[] = {
     { GG_LOGIN31,       gg_login31_handler		 },
     { GG_LOGIN50,       gg_login50_handler		 },
 	{ GG_LOGIN60,		gg_login60_handler		 },
+	{ GG_LOGIN70,		gg_login70_handler		 },
     { GG_NOTIFY_FIRST,  gg_notify_handler		 },
     { GG_NOTIFY_LAST,   gg_notify_end_handler	 },
 	{ GG_USERLIST_REQUEST, gg_userlist_request_handler },
