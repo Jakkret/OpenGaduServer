@@ -18,7 +18,7 @@ BOT_PASS    = "bott1"  # Password
 GG_VERSION  = 0x29       # GG 5.0
 
 OLLAMA_URL   = "http://localhost:11434/api/chat"
-OLLAMA_MODEL = "qwen3:4b"  # Available model on your PC
+OLLAMA_MODEL = "Qwen2.5-Coder:7B-Instruct-Q5_K_M"  # Available model on your PC
 
 # "jak masz się zachowywać?"
 SYSTEM_PROMPT = """Jesteś asystentem o imieniu Lamus dostępnym przez komunikator Gadu-Gadu.
