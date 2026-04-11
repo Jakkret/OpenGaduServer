@@ -86,10 +86,10 @@ static int gg_login50_handler(client_t *c, void *data, uint32_t len) {
 
     gg_login5_t *l = (gg_login5_t*) data;
 
-    LOG_INFO("HANDLER: Login attempt from UIN %u", l->uin);
+    LOG_INFO("HANDLER: Login50 attempt from UIN %u", l->uin);
 
     if (!authorize(l->uin, c->seed, l->hash)) {
-        LOG_WARN("HANDLER: Login FAILED for UIN %u", l->uin);
+        LOG_WARN("HANDLER: Login50 FAILED for UIN %u", l->uin);
         write_full_packet(c, GG_LOGIN_FAILED, NULL, 0);
         c->remove = 1;
         return -1;
@@ -109,7 +109,7 @@ static int gg_login50_handler(client_t *c, void *data, uint32_t len) {
     c->version = l->version;
     c->timeout = time(NULL) + TIMEOUT_DEFAULT;
 
-    LOG_OK("HANDLER: Login OK for UIN %u", c->uin);
+    LOG_OK("HANDLER: Login50 OK for UIN %u", c->uin);
     write_full_packet(c, GG_LOGIN_OK, NULL, 0);
 	changed_status(c);
 
