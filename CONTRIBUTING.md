@@ -2,13 +2,17 @@
 > [!NOTE]
 > Punkty wspomniane tutaj są w wielkim wyogólnieniu. W razie dalszych pytań skontaktuj się na serwerze discord OGS-devel.<br><br>
 
+Ostatnia Aktualizacja: 11 Kwietnia 2026
+
 Witaj w OpenGaduServer! Jeżeli chcesz kontrybutować do tego projekty, to masz wiele działów, w których możesz wesprzeć rozwój projektu - nawet dzięki jednej linijce! Mając dużo sposobów kontrybucji, w podpunkcie [W czym mogę pomóc?](#2-w-czym-mog%C4%99-pom%C3%B3c) opisane jest Jak i co to znaczy wesprzeć w danej kategorii. 
 
 ------------
 # Spis treści<br>
 1. [Zanim wykonasz commit...](#1-zanim-wykonasz-commit)<br>
 2. [W czym mogę pomóc?](#2-w-czym-mog%C4%99-pom%C3%B3c)<br>
-3. [Jak zrobić zmiany?](#3-jak-zrobi%C4%87-zmiany)<br><br>
+3. [Znalazłem Błąd - gdzie to raportować?]()<br>
+4. [Jak zrobić zmiany?](#4-jak-zrobi%C4%87-zmiany)<br><br>
+
 -----------
 
 ## 1. Zanim wykonasz commit...
@@ -57,8 +61,11 @@ Każda dodana linijka pomaga rozwojowi projektu, nawet jeśli to ogranicza się 
 - **Tłumaczeniu dokumentacji na Polski -> Angielski** (lub odwrotnie; zbędne) - W przypadku, kiedy popularność tego repozytorium nadejdzie aż do państw _nie-polskich_ (choć wątpie...), zapewnie przyjdzie okazja przepisywania dokumentacji na język angielski.
 - **Wyszukiwaniu instalatorów klientów GaduGadu** (na chwile obecną wersji 5.x) - Aby sprawdzić kompatybilność z innymi klientami GG, potrzebujemy instalatorów wersji 5.x aby upewnić się, że serwer poprawnie komunikuje się z klientem! Takie rzeczy możesz doszukać i odzyskać ze snapshotów np. z Wayback Machine.[^3]
 
-## 3. Jak zrobić zmiany?
-Jeżeli zapoznałeś się z [punktem 1.](#1-zanim-wykonasz-commit) i wykonałeś to, co wymagane możesz już działać! 
+## 3. Znalazłem błąd - gdzie to mam raportować?
+Jeżeli podczas testowania programu, znalazłeś błąd/buga, powinieneś przejść do karty [Issues tego repozytorium](https://github.com/Jakkret/OpenGaduServer/issues)
+
+## 4. Jak zrobić zmiany?
+Jeżeli zapoznałeś się z [punktem 1.](#1-zanim-wykonasz-commit) oraz [punktem 3.]() i wykonałeś to, co wymagane możesz już działać! 
 - Musisz wykonać Fork (kopie) tego repozytorium na twój profil,
 - wykonać zmiany, 
 - przesłać pull request
