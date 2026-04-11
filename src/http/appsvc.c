@@ -34,7 +34,6 @@ void handle_appsvc(int sock, char *query, int version) {
 				fmnumber[0] ? fmnumber : "?",
 				clientVersion[0] ? clientVersion : "?"
 			);
-			
 			break;
 		} // end case
 		
@@ -70,7 +69,6 @@ void handle_appsvc(int sock, char *query, int version) {
 
 			send(sock, response, strlen(response), 0);
 			LOG_OK("APPSVC: Sent chat server address to client %s", fmnumber[0] ? fmnumber : "?");
-			return;
 			break;
 		}
 		default:
