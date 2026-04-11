@@ -39,7 +39,13 @@ void http_router(int client_sock, char *method, char *path, char *query) {
 	// fmregister2.asp - v5 version request
 	// fmregister.asp - v3.1 version request
 	
-    } else {
+    } if(strcmp(path, "/appsvc/fmpubdetails2.asp")){
+		//h_pubdir_details_46(client_sock, query);
+		return;
+	}
+	
+	
+	else {
         LOG_WARN("HTTP: Unknown path: %s", path);
         http_send_response(client_sock, 404, "Not Found",
             "404 - Unknown path\n");
