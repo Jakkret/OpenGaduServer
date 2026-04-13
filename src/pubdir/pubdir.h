@@ -9,7 +9,7 @@ typedef struct {
 	char nickname[64];		// przezwisko
 	char email[128];		// email
 	char birthyear[4];		// rok
-	long gender;			// Płeć
+	int gender;			// Płeć
 	char city[64];			// Miejscowość
 	char phone[16];			// numer telefonu (wraz z nr kier.)
 } PubDir;
