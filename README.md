@@ -4,7 +4,7 @@
 Jak chcesz wydać commit do tego repozytorium - **obczaj CONTRIBUTING.MD** - Więcej rąk sprawi, że ten projekt będzie stabilnie chodził wcześniej.. a czasami lepiej!
 
 > [!IMPORTANT]
-> Ten projekt nie jest powiązany, wspierany ani stowarzyszony z Gadu Gadu (lub GG). Projekt ten jest całkowicie otwarty, darmowy i niekomercyjny - nie przyjmuje z niego żadnych dochodów.
+> Ten projekt nie jest powiązany ani wspierany przez Gadu Gadu (lub GG). Projekt ten jest całkowicie otwarty, darmowy — i nie powinien być 
 
 ------------------------------
 ### Lista wsparcia wersji GG:
@@ -13,7 +13,7 @@ Jak chcesz wydać commit do tego repozytorium - **obczaj CONTRIBUTING.MD** - Wi�
 > Ten projekt jest w stanie rozwojowym. Nie oczekuj, że wszystko działa od tak - W tej chwili mimo, że funkcje poniżej są podane, nie znaczy że działają w 100%. Więcej funkcji nadejdzie w późniejszych poprawkach.
 
 W chwili obecnej, OpenGaduServer wspiera większość podstawowych funkcji:
-- [ ] Gadu Gadu 3.1: (niemożliwe do implementacji)
+- [ ] Gadu Gadu 3.1: (wymaga serwera SSL na porcie 443, omijane jak narazie)
 
 - [x] Gadu Gadu 5.0:
     - [x] rejestrowanie i przekierowanie do serwera
