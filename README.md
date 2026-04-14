@@ -4,7 +4,7 @@
 Jak chcesz wydać commit do tego repozytorium - **obczaj CONTRIBUTING.MD** - Więcej rąk sprawi, że ten projekt będzie stabilnie chodził wcześniej.. a czasami lepiej!
 
 > [!IMPORTANT]
-> Ten projekt nie jest powiązany ani wspierany przez Gadu Gadu (lub GG). Projekt ten jest całkowicie otwarty, darmowy — i nie powinien być 
+> Ten projekt nie jest powiązany ani wspierany przez Gadu Gadu (lub GG). Projekt ten jest całkowicie otwarty, darmowy
 
 ------------------------------
 ### Lista wsparcia wersji GG:
