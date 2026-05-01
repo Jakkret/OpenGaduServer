@@ -30,7 +30,7 @@ void handle_appsvc(int sock, char *query, int version) {
 			
 			// the important stuff are there.. rest to be added
 			
-			LOG_INFO("APPSVC v5: Client %s (ver. '%s') requests the IP addresses", 
+			LOG_INFO("APPMSG v5: Client %s (ver. '%s') requests the IP addresses", 
 				fmnumber[0] ? fmnumber : "?",
 				clientVersion[0] ? clientVersion : "?"
 			);
@@ -45,7 +45,7 @@ void handle_appsvc(int sock, char *query, int version) {
 			get_param(query, "fmnumber", fmnumber,  sizeof(fmnumber));	// here lies the UIN
 			get_param(query, "lastbanner",  lastbanner, sizeof(lastbanner));	// whatever this is
 
-			LOG_INFO("APPSVC: Client %s (lastbanner %s) requesting chat server address",
+			LOG_INFO("APPMSG: Client %s (lastbanner %s) requesting chat server address",
 				fmnumber[0] ? fmnumber  : "?",
 				lastbanner[0] ? lastbanner : "?"
 			);
@@ -68,11 +68,22 @@ void handle_appsvc(int sock, char *query, int version) {
 			);
 
 			send(sock, response, strlen(response), 0);
-			LOG_OK("APPSVC: Sent chat server address to client %s", fmnumber[0] ? fmnumber : "?");
+			LOG_OK("APPMSG: Sent chat server address to client %s", fmnumber[0] ? fmnumber : "?");
+			break;
+		}
+		
+		case 6: {
+			
+			char lastbanner[32]; char lastmsg[8];
+			get_param(query, "fmnumber", fmnumber,  sizeof(fmnumber));			// numerek użytkownika
+			get_param(query, "lastbanner",  lastbanner, sizeof(lastbanner));	// nie mam zielonego pojęcia
+			get_param(query, "lastmsg", lastmsg, sizeof(lastmsg));				// numer ostatnio otrzymanej wiadomości systemowej
+			
+			LOG_INFO("APPMSG v6: User %s requests the IP addresses", fmnumber[0] ? fmnumber : "?");
 			break;
 		}
 		default:
-			LOG_WARN("APPSVC: Unknown version %d", version);
+			LOG_WARN("APPMSG: Unknown version %d", version);
             http_send_response(sock, 400, "Bad Request", "Unknown version\n");
             return;
 		

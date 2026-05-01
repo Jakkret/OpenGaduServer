@@ -2,11 +2,13 @@ CC     = gcc
 CFLAGS = -Wall -Wextra
 
 SRCS = src/main.c \
+	   src/hash/md5.c \
        src/http/http_server.c \
        src/http/router.c \
        src/http/http_utils.c \
        src/http/appsvc.c \
        src/http/fmregister.c \
+	   src/http/regtoken.c \
 	   src/chat/client.c \
 	   src/chat/handlers.c \
 	   src/chat/protocol.c \
