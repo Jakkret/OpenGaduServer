@@ -3,6 +3,6 @@
 
 #include "../server.h"
 
-int ReadConfig(const char *filename, ServerConf *scCHAT, ServerConf *scHTTP);
+int ReadConfig(const char *filename, ServerConf *scCHAT, ServerConf *scHTTP, ServerConf *scADMIN);
 
 #endif

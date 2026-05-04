@@ -54,4 +54,8 @@ int  db_verify_password(uint32_t uin, const char *password);
 // Print all users to stdout (debug)
 void db_dump();
 
+// Get all users - returns ponter to an array
+User* db_get_all_users();
+int db_get_user_count();
+
 #endif // USERS_H

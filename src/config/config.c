@@ -19,7 +19,7 @@ static const char *cutstr(const char *str, char cut) {
 }
 
 
-int ReadConfig(const char *filename, ServerConf *scCHAT, ServerConf *scHTTP){
+int ReadConfig(const char *filename, ServerConf *scCHAT, ServerConf *scHTTP, ServerConf *scADMIN){
     FILE *f = fopen(filename, "r");
     if(!f){
         LOG_ERR("CONFIG: Server could not load config: %s", filename);
@@ -45,7 +45,12 @@ int ReadConfig(const char *filename, ServerConf *scCHAT, ServerConf *scHTTP){
         } else if(strncmp(arg, "HTTP_PORT=", 10) == 0){
             scHTTP->Port = atoi(cutstr(arg, symbol));
 
-        }
+        } else if(strncmp(arg, "HTTP_ADMIN=", 11) == 0){
+			if(scADMIN != NULL){
+				scADMIN->IPaddr = HTTP_ADMIN_DEFAULT;
+				scADMIN->Port = HTTP_ADMIN_PORT;
+			}
+		}
     }
 
     fclose(f);

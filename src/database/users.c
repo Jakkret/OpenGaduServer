@@ -213,6 +213,15 @@ int db_verify_password(uint32_t uin, const char *password) {
     return match;
 }
 
+// get every user
+User* db_get_all_users() {
+    return db.users;
+}
+
+int db_get_user_count() {
+    return db.count;
+}
+
 // -- Debug -------------------
 void db_dump() {
     printf("\n── Database dump (%d users) ──────────────\n", db.count);

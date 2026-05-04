@@ -60,8 +60,6 @@ void* chat_server_start(void* arg) {
 
     int opt = 1;
     setsockopt(server_sock, SOL_SOCKET, SO_REUSEADDR, (const char*)&opt, sizeof(opt));
-	
-	ReadConfig(CONFIG_FILENAME, &sCHAT, &sHTTP);
 
     struct sockaddr_in address = {
         .sin_family      = AF_INET,

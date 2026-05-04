@@ -17,10 +17,6 @@ void* http_server_start(void* arg) {
     int opt = 1;
     setsockopt(server_sock, SOL_SOCKET, SO_REUSEADDR, (const char *)&opt, sizeof(opt));
 
-
-	// Read off config (src/config/config.c)
-	ReadConfig(CONFIG_FILENAME, &sCHAT, &sHTTP);
-
     struct sockaddr_in address = {
         .sin_family      = AF_INET,
         .sin_port        = htons(sHTTP.Port),

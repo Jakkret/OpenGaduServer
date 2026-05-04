@@ -24,9 +24,6 @@ void handle_regtoken(int sock){
 	
 	gen_tokenid(token, sizeof(token));
 	
-	ServerConf sHTTP, sCHAT;
-	ReadConfig(CONFIG_FILENAME, &sCHAT, &sHTTP);
-	
 	// odpowiedź z namiarami
 	snprintf(body, sizeof(body),
 		"1 1 6\r\n"					// rozmiary "obrazka"

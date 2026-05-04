@@ -49,11 +49,6 @@ void handle_appsvc(int sock, char *query, int version) {
 				fmnumber[0] ? fmnumber  : "?",
 				lastbanner[0] ? lastbanner : "?"
 			);
-			
-			
-			// podanie adresu w stylu 3.1 - jednoadresowiec
-			
-			ReadConfig(CONFIG_FILENAME, &sCHAT, &sHTTP);
 
 			char body[64];
 			snprintf(body, sizeof(body), "0 0 %s:%d %s\n", sCHAT.IPaddr ,sCHAT.Port, sCHAT.IPaddr);		
@@ -97,8 +92,6 @@ void handle_appsvc(int sock, char *query, int version) {
 	 *
 	 * więcej w blogu z dnia 22.03.2026
 	 */
-
-	ReadConfig(CONFIG_FILENAME, &sCHAT, &sHTTP);
 
     char body[64];
     snprintf(body, sizeof(body), "0 0 %s %s\n", sCHAT.IPaddr, HOST_UNAVAIL);		
