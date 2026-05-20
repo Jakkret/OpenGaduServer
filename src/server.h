@@ -13,7 +13,9 @@ typedef struct {
 extern ServerConf sCHAT;
 extern ServerConf sHTTP;
 extern ServerConf sADMIN;
+
 #define CONFIG_FILENAME "ogs-conf.ini"
+#define TOKEN_ANS "OGS211"
 
 #define HTTP_ADMIN_DEFAULT	"127.0.0.1"
 #define HTTP_ADMIN_PORT	2323
