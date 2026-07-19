@@ -45,12 +45,7 @@ int ReadConfig(const char *filename, ServerConf *scCHAT, ServerConf *scHTTP, Ser
         } else if(strncmp(arg, "HTTP_PORT=", 10) == 0){
             scHTTP->Port = atoi(cutstr(arg, symbol));
 
-        } else if(strncmp(arg, "HTTP_ADMIN=", 11) == 0){
-			if(scADMIN != NULL){
-				scADMIN->IPaddr = HTTP_ADMIN_DEFAULT;
-				scADMIN->Port = HTTP_ADMIN_PORT;
-			}
-		}
+        }
     }
 
     fclose(f);
