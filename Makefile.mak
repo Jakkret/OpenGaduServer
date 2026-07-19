@@ -17,6 +17,7 @@ SRCS = src/main.c \
 	   src/chat/chat_server.c \
 	   src/config/config.c \
        src/database/users.c \
+	   src/database/sqlite/sqlite3.c
 
 # opcja dla kompilacji dla Windows Server 2003
 # wymaga Visual C++ redist 2015 (wiecej w blogu z 1 maja)

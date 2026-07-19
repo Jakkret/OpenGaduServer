@@ -57,7 +57,6 @@ void handle_regtoken(int sock){
 #define TOKEN_PASSED 1
 #define TOKEN_NOT_PASSED 0
 
-
 // omija sprawdzanie czy jest wpisany TOKEN_ANS jako odp, niech będzie
 int validate_token(char *query, int sock){
 	if(strncmp(query, "/pcapt.gif?tokenid=", 20) == 0){

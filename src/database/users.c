@@ -100,8 +100,8 @@ int db_register(const char *email, const char *password, const char *qa) {
     uint32_t uin = generate_uin();
     if (uin == 0) return -1;
 
-    char hash[DB_PASS_HASH_LEN];
-    hash_password(password, hash);
+    // USUNIĘTE: hash_password(password, hash) - GG32 wymaga hasła w formie
+    // odtwarzalnej przez klienta (authorize() liczy gg_login_hash na tym polu)
 
     sqlite3_stmt *stmt;
     const char *sql =
@@ -112,7 +112,7 @@ int db_register(const char *email, const char *password, const char *qa) {
     sqlite3_bind_int(stmt, 1, (int)uin);
     if (email && email[0]) sqlite3_bind_text(stmt, 2, email, -1, SQLITE_TRANSIENT);
     else sqlite3_bind_null(stmt, 2);
-    sqlite3_bind_text(stmt, 3, hash, -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 3, password, -1, SQLITE_TRANSIENT);  // ZMIANA: plaintext zamiast hash
     if (qa) sqlite3_bind_text(stmt, 4, qa, -1, SQLITE_TRANSIENT);
     else sqlite3_bind_null(stmt, 4);
     sqlite3_bind_int(stmt, 5, (int)time(NULL));

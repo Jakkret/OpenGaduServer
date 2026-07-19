@@ -10,7 +10,7 @@ import time
 import requests
 
 # konfiguracja
-GG_HOST     = "192.168.137.1"
+GG_HOST     = "10.0.0.2"
 GG_PORT     = 8074
 
 BOT_UIN     = 1041          # GG UIN

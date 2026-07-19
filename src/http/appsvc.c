@@ -95,7 +95,6 @@ void handle_appsvc(int sock, char *query, int version) {
 
     char body[64];
     snprintf(body, sizeof(body), "0 0 %s %s\n", sCHAT.IPaddr, HOST_UNAVAIL);		
-	// currently it is:			  0 0 192.168.137.1 notoperating
 
     char response[256];
     snprintf(response, sizeof(response),
