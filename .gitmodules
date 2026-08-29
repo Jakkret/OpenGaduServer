@@ -1,0 +1,3 @@
+[submodule "src/debug/OGS-lamma"]
+	path = src/debug/OGS-lamma
+	url = https://github.com/Jakkret/OGS_bot/

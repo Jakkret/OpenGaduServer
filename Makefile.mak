@@ -1,4 +1,4 @@
-CC     = gcc
+CC     = i686-w64-mingw32-gcc
 CFLAGS = -Wall -Wextra
 TARGET_NAME = serwer_gg.exe
 
@@ -20,10 +20,10 @@ SRCS = src/main.c \
 	   src/database/sqlite/sqlite3.c
 
 # opcja dla kompilacji dla Windows Server 2003
-# wymaga Visual C++ redist 2015 (wiecej w blogu z 1 maja)
-ifeq ($(RUNNABLE_ON_2K3), yes)
+# preferowalnie kompilator opierający się na starym msvcrt zamiast ucrt
+ifeq ($(WS2K3), yes)
 	CC = i686-w64-mingw32-gcc
-    CFLAGS += -D_WIN32_WINNT=0x0502
+    CFLAGS += -D_WIN32_WINNT=0x0500
 	LIBS += -static -static-libgcc -Wl,-Bstatic -lws2_32 -lpthread -Wl,-Bdynamic -lmsvcrt -lkernel32
 	TARGET_NAME = server_2003_gg.exe
 endif
