@@ -28,9 +28,8 @@ void changed_status(client_t *c) {
         reply.uin    = c->uin;
         reply.status = c->status;
         write_full_packet(other, GG_NEW_STATUS, &reply, sizeof(reply));
-		// sends [0x0002] and shows the new status
 
-		LOG_INFO("HANDLER: Sending status packet to UIN %u: uin=%u status=0x%08X size=%zu",
+		LOG_INFO("HANDLER: attempting to send packet to UIN %u: uin=%u status=0x%08X size=%zu",
 			other->uin, reply.uin, reply.status, sizeof(reply));
     }
 }
@@ -254,9 +253,16 @@ static int gg_notify_end_handler(client_t *c, void *data, uint32_t len) {
         write_full_packet(c, GG_NOTIFY_REPLY, &reply, sizeof(reply));
         LOG_INFO("HANDLER: Contact %u -> %s", uin, friend ? "ONLINE" : "OFFLINE");
     }
+
+
+    // dalej ma opóźnienie komputer z 10/100 nic'iem... dziwne
+    changed_status(c);
 	
 	// FIX - 22.03.2026: klienci późno dostają statusy swoich kontaktów
 	// informuj zalogowanych użytkowników że jesteś online
+
+    // NOTE - 29.08.2026: To chyba działa... ale jest zbędne bo działa implementacja na górze.
+    /*
 	for (int i = 0; i < c->friend_count; i++) {
 		client_t *friend = client_find(c->friends[i].uin);
 		if (!friend) continue;
@@ -267,7 +273,7 @@ static int gg_notify_end_handler(client_t *c, void *data, uint32_t len) {
 		reply.status = c->status;
 		write_full_packet(friend, 0x0002, &reply, sizeof(reply));
 	}
-
+    */
 	changed_status(c);
 
     return 0;
@@ -300,6 +306,8 @@ static int gg_new_status_handler(client_t *c, void *data, uint32_t len) {
     c->status = status;
 
     // opis statusu
+    // NOTE - 29.08.2026: Tu pewnie jest powód dlaczego statusy NIE POKAZUJĄ się. 
+    // TODO: Poprawić tak, żeby opisy były widoczne.
     if (c->status_descr) {
         free(c->status_descr);
         c->status_descr = NULL;

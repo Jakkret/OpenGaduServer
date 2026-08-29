@@ -40,7 +40,7 @@ client_t* client_create(int fd, struct sockaddr_in addr, uint32_t seed){
 	c->state        = STATE_LOGIN;
 	c->timeout      = time(NULL) + TIMEOUT_DEFAULT;
 	c->last_ping    = time(NULL);
-	c->status       = 0;
+	c->status       = GG_STATUS_NOT_AVAIL;        // może to zmieni?
 	c->status_descr = NULL;
 	c->remove       = 0;
 	c->friends      = NULL;
@@ -73,8 +73,19 @@ void client_destroy(client_t *c){
     }
 
     // zwolnij pamięć
-    if (c->status_descr) free(c->status_descr);
-    if (c->friends)      free(c->friends);
+    if(c->status_descr) free(c->status_descr);
+    if(c->friends)      free(c->friends);
+    if(c->status && c->status != GG_STATUS_NOT_AVAIL) {
+        // wyślij status 'niedostępny' do znajomych
+        for (int i = 0; i < c->friend_count; i++) {
+            friend_t *f = &c->friends[i];
+            client_t *friend_client = client_find(f->uin);
+            if (friend_client && friend_client->status_write) {
+                friend_client->status_write(friend_client, c);
+                LOG_INFO("CLIENT: change status to NOT_AVAIL for UIN %u", f->uin, c->uin);
+            }
+        }
+    }
 
     LOG_INFO("CLIENT: Destroyed session for UIN %u", c->uin);
     free(c);
