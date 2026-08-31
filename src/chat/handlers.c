@@ -306,10 +306,6 @@ static int gg_notify_end_handler(client_t *c, void *data, uint32_t len) {
 
         LOG_INFO("HANDLER: Contact %u -> %s", uin, friend ? "ONLINE" : "OFFLINE");
     }
-
-
-    // dalej ma opóźnienie komputer z 10/100 nic'iem... dziwne
-    changed_status(c);
 	
 	// FIX - 22.03.2026: klienci późno dostają statusy swoich kontaktów
 	// informuj zalogowanych użytkowników że jesteś online
