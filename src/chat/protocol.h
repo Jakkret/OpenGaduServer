@@ -7,6 +7,7 @@
 // Packet definitions
 #define GG_WELCOME          		 0x0001
 #define GG_LOGIN31           		 0x0001  // GG 3.1
+#define GG_LOGIN40           		 0x000c  // GG 4.0 (w tym przypadku używasz gg_login4_t)
 #define GG_LOGIN50          		 0x000c  // GG 5.x
 #define GG_LOGIN60					 0x0015  // GG 6.x i JaduGadu dla Java
 #define GG_LOGIN70					 0x0019	 // GG 7.0
@@ -56,6 +57,7 @@
 
 // status changes
 #define GG_NEW_STATUS       		 0x0002
+#define GG_NEW_STATUS_EXT   	     0x0002 // to samo ale inna struktura
 #define GG_STATUS77         		 0x0006
 #define GG_STATUS50					 0x0002	
 
@@ -101,6 +103,17 @@ typedef struct {
     uint32_t hash;
     uint32_t status;
 } GG_PACKED gg_login3_t;
+
+// według wiresharka to tak wygląda pakiet
+typedef struct {
+    uint32_t uin;
+    uint32_t hash;
+    uint32_t status;
+    uint32_t version;
+    uint32_t client_ver;
+    uint32_t local_ip;
+    uint16_t local_port;
+} GG_PACKED gg_login4_t;
 
 typedef struct {
     uint32_t uin;
@@ -151,6 +164,17 @@ typedef struct {
     uint32_t status;
 } GG_PACKED gg_notify_reply_t;
 
+
+typedef struct {
+    uint32_t uin;
+    uint32_t status;
+    uint32_t remote_ip;
+    uint16_t remote_port;
+    uint32_t version;
+    uint8_t  image_size;
+    uint8_t  unknown1;
+} GG_PACKED gg_notify_reply_descr_t;
+
 typedef struct {
     uint32_t status;
 } GG_PACKED gg_new_status_t;
@@ -159,6 +183,21 @@ typedef struct {
     uint32_t uin;
     uint32_t status;
 } GG_PACKED gg_status_t;
+
+// wedle wiresharka.
+struct gg_new_status_ext {
+    uint32_t status;
+    char *descr;
+} GG_PACKED;
+
+
+typedef struct gg_new_status80_t {
+    uint32_t status;
+    uint32_t flags;
+    int descr_size;
+    char *descr;
+} GG_PACKED gg_new_status80_t;
+
 
 typedef struct {
     uint32_t recipient;

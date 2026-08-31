@@ -1,5 +1,5 @@
 CC     = i686-w64-mingw32-gcc
-CFLAGS = -Wall -Wextra
+CFLAGS = -Wall -Wextra -g -O0
 TARGET_NAME = serwer_gg.exe
 
 SRCS = src/main.c \

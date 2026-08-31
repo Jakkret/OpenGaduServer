@@ -94,7 +94,7 @@ void handle_appsvc(int sock, char *query, int version) {
 	 */
 
     char body[64];
-    snprintf(body, sizeof(body), "0 0 %s %s\n", sCHAT.IPaddr, HOST_UNAVAIL);		
+    snprintf(body, sizeof(body), "0 0 %s:8074 %s\n", sCHAT.IPaddr, HOST_UNAVAIL);		
 
     char response[256];
     snprintf(response, sizeof(response),

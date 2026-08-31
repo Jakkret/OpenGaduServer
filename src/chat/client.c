@@ -47,6 +47,14 @@ client_t* client_create(int fd, struct sockaddr_in addr, uint32_t seed){
 	c->friend_count    = 0;
 	c->friend_capacity = 0;
 	
+    // init mutex
+#ifdef PLATFORM_WINDOWS
+	InitializeCriticalSection(&c->lock);
+#else
+	pthread_mutex_init(&c->lock, NULL);
+#endif
+
+    mutex_init(&c->lock);
 	// add to the table
 	for(int i = 0; i < MAX_CLIENTS; i++){
 		if(!clients[i]){
@@ -86,6 +94,14 @@ void client_destroy(client_t *c){
             }
         }
     }
+
+#ifdef PLATFORM_WINDOWS
+    DeleteCriticalSection(&c->lock);
+#else
+    pthread_mutex_destroy(&c->lock);
+#endif
+
+    mutex_destroy(&c->lock);
 
     LOG_INFO("CLIENT: Destroyed session for UIN %u", c->uin);
     free(c);

@@ -13,6 +13,14 @@
 
 #define MAX_CLIENTS 1024
 
+#ifdef PLATFORM_WINDOWS
+    #include <windows.h>
+    typedef CRITICAL_SECTION mutex_t;
+#else
+    #include <pthread.h>
+    typedef pthread_mutex_t mutex_t;
+#endif
+
 // ruff contact list
 typedef struct {
 	uint32_t uin;
@@ -42,6 +50,8 @@ typedef struct client_t {
 	friend_t *friends;              // contact list (dynamic array)
 	int      friend_count;
 	int      friend_capacity;
+
+	mutex_t  lock;   // chroni status, status_descr, friends[]
 
     // function pointers (like USG)
 	void (*status_write)(struct client_t *to, struct client_t *who);

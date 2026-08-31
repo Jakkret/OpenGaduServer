@@ -10,27 +10,83 @@
 #include "messaging.h"
 #include "handlers.h"
 
+
+// buduje i wysyła GG_NOTIFY_REPLY z opcjonalnym opisem statusu (zmienna długość)
+static void send_status_with_descr(client_t *to, client_t *from, uint32_t uin, uint32_t fallback_status, uint32_t packet_type) {
+    uint32_t status;
+    char    *descr_copy = NULL;
+    uint32_t descr_len  = 0;
+
+    if (from) {
+        mutex_lock(&from->lock);
+        status = from->status;
+        if (from->status_descr) {
+            descr_len = (uint32_t)strlen(from->status_descr);
+            descr_copy = malloc(descr_len + 1);
+            if (descr_copy) {
+                memcpy(descr_copy, from->status_descr, descr_len + 1);
+            } else {
+                LOG_ERR("HANDLER: malloc failed copying status_descr");
+                descr_len = 0;
+            }
+        }
+        mutex_unlock(&from->lock);
+    } else {
+        status = fallback_status;
+    }
+
+    uint8_t  *buf;
+    uint32_t  total_len;
+
+    if (descr_len == 0) {
+        gg_notify_reply_t reply;
+        reply.uin    = uin;
+        reply.status = status;
+        write_full_packet(to, packet_type, &reply, sizeof(reply));
+        if (descr_copy) free(descr_copy);
+        return;
+    }
+
+    total_len = sizeof(gg_notify_reply_descr_t) + descr_len;
+    buf = malloc(total_len);
+    if (!buf) {
+        LOG_ERR("HANDLER: malloc failed in send_status_with_descr");
+        free(descr_copy);
+        return;
+    }
+
+    gg_notify_reply_descr_t *reply = (gg_notify_reply_descr_t*)buf;
+    reply->uin         = uin;
+    reply->status      = status;
+    reply->remote_ip   = from ? from->addr.sin_addr.s_addr : 0;
+    reply->remote_port = from ? from->addr.sin_port        : 0;
+    reply->version     = from ? from->version               : 0;
+    reply->image_size  = from ? (uint8_t)from->image_size   : 0;
+    reply->unknown1    = 0;
+
+    memcpy(buf + sizeof(gg_notify_reply_descr_t), descr_copy, descr_len);
+
+    write_full_packet(to, packet_type, buf, total_len);
+
+    free(buf);
+    free(descr_copy);
+}
+
 // show clients the change
 void changed_status(client_t *c) {
-	client_t **all = client_get_all();
-	
-    // look through all online clients
+    client_t **all = client_get_all();
+
     for (int i = 0; i < MAX_CLIENTS; i++) {
         client_t *other = all[i];
         if (!other || other == c) continue;
         if (other->state != STATE_LOGIN_OK) continue;
-
-        // check if other has c in its contacts
         if (!client_find_friend(other, c->uin)) continue;
 
-        //send status
-        gg_notify_reply_t reply;
-        reply.uin    = c->uin;
-        reply.status = c->status;
-        write_full_packet(other, GG_NEW_STATUS, &reply, sizeof(reply));
+        // changed_status() — LIVE update, zawsze GG_NEW_STATUS
+        send_status_with_descr(other, c, c->uin, 0, GG_NEW_STATUS);
 
-		LOG_INFO("HANDLER: attempting to send packet to UIN %u: uin=%u status=0x%08X size=%zu",
-			other->uin, reply.uin, reply.status, sizeof(reply));
+        LOG_INFO("HANDLER: Sending status packet to UIN %u: uin=%u status=0x%08X descr=\"%s\"",
+            other->uin, c->uin, c->status, c->status_descr ? c->status_descr : "");
     }
 }
 
@@ -46,10 +102,10 @@ static int gg_login31_handler(client_t *c, void *data, uint32_t len) {
 
     gg_login3_t *l = (gg_login3_t*) data;
 
-    LOG_INFO("HANDLER: Login attempt from UIN %u", l->uin);
+    LOG_INFO("HANDLER: Login (3.1) attempt from UIN %u", l->uin);
 
     if (!authorize(l->uin, c->seed, l->hash)) {
-        LOG_WARN("HANDLER: Login FAILED for UIN %u", l->uin);
+        LOG_WARN("HANDLER: Login (3.1) FAILED for UIN %u", l->uin);
         write_full_packet(c, GG_LOGIN_FAILED, NULL, 0);
         c->remove = 1;
         return -1;
@@ -155,7 +211,7 @@ static int gg_login60_handler(client_t *c, void *data, uint32_t len) {
     return 0;
 }
 
-// Logowanie dla wersji 6.x
+// Logowanie dla wersji 7.x
 static int gg_login70_handler(client_t *c, void *data, uint32_t len) {
     if (len < sizeof(gg_login70_t)) return -2;
     if (c->state != STATE_LOGIN) {
@@ -246,11 +302,8 @@ static int gg_notify_end_handler(client_t *c, void *data, uint32_t len) {
         uint32_t uin = c->friends[i].uin;
         client_t *friend = client_find(uin);
 
-        gg_notify_reply_t reply;
-        reply.uin    = uin;
-        reply.status = friend ? friend->status : GG_STATUS_NOT_AVAIL;
+        send_status_with_descr(c, friend, uin, GG_STATUS_NOT_AVAIL, GG_NOTIFY_REPLY);
 
-        write_full_packet(c, GG_NOTIFY_REPLY, &reply, sizeof(reply));
         LOG_INFO("HANDLER: Contact %u -> %s", uin, friend ? "ONLINE" : "OFFLINE");
     }
 
@@ -262,18 +315,14 @@ static int gg_notify_end_handler(client_t *c, void *data, uint32_t len) {
 	// informuj zalogowanych użytkowników że jesteś online
 
     // NOTE - 29.08.2026: To chyba działa... ale jest zbędne bo działa implementacja na górze.
-    /*
+    
 	for (int i = 0; i < c->friend_count; i++) {
 		client_t *friend = client_find(c->friends[i].uin);
 		if (!friend) continue;
 		
-		// wyślij temu kontaktowi twój status
-		gg_notify_reply_t reply;
-		reply.uin    = c->uin;
-		reply.status = c->status;
-		write_full_packet(friend, 0x0002, &reply, sizeof(reply));
+		// wyślij temu kontaktowi twój status z opisem
+		send_status_with_descr(friend, c, c->uin, 0, GG_NEW_STATUS);
 	}
-    */
 	changed_status(c);
 
     return 0;
@@ -303,24 +352,50 @@ static int gg_new_status_handler(client_t *c, void *data, uint32_t len) {
         c->status_private = 0;
     }
 
+    mutex_lock(&c->lock);
+
     c->status = status;
 
-    // opis statusu
-    // NOTE - 29.08.2026: Tu pewnie jest powód dlaczego statusy NIE POKAZUJĄ się. 
-    // TODO: Poprawić tak, żeby opisy były widoczne.
     if (c->status_descr) {
         free(c->status_descr);
         c->status_descr = NULL;
-    }
+    }  
+
+
     if (len > sizeof(gg_new_status_t)) {
         uint32_t descr_len = len - sizeof(gg_new_status_t);
         c->status_descr = malloc(descr_len + 1);
         memcpy(c->status_descr, data + sizeof(gg_new_status_t), descr_len);
         c->status_descr[descr_len] = 0;
     }
+    mutex_unlock(&c->lock);
+    
 
     LOG_INFO("HANDLER: UIN %u status -> 0x%08X descr=\"%s\"",
              c->uin, c->status, c->status_descr ? c->status_descr : "");
+
+    // spróbuj wysłać status do kontaktów
+    if(c->status_descr && c->status_descr[0] != 0){
+        LOG_INFO("HANDLER: UIN %u has status description, sending to contacts", c->uin);
+        client_t **all = client_get_all();
+        for (int i = 0; i < MAX_CLIENTS; i++) {
+            client_t *other = all[i];
+            if (!other || other == c) continue;
+            if (other->state != STATE_LOGIN_OK) continue;
+
+            // check if other has c in its contacts
+            if (!client_find_friend(other, c->uin)) continue;
+
+            // send status description
+            gg_notify_reply_t reply;
+            reply.uin    = c->uin;
+            reply.status = c->status;
+            write_full_packet(other, GG_NEW_STATUS, &reply, sizeof(reply));
+
+            LOG_INFO("HANDLER: Sent status to UIN %u", other->uin);
+        }
+        
+    }
 
     // powiadom kontakty
 	changed_status(c);

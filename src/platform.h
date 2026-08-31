@@ -95,4 +95,20 @@
     #define GG_PACKED        __attribute__((packed))
 #endif
 
+
+// -- Mutex wrappers ----------------
+#ifdef PLATFORM_WINDOWS
+    typedef CRITICAL_SECTION mutex_t;
+    #define mutex_init(m)   InitializeCriticalSection(m)
+    #define mutex_destroy(m) DeleteCriticalSection(m)
+    #define mutex_lock(m)   EnterCriticalSection(m)
+    #define mutex_unlock(m) LeaveCriticalSection(m)
+#else
+    typedef pthread_mutex_t mutex_t;
+    #define mutex_init(m)    pthread_mutex_init(m, NULL)
+    #define mutex_destroy(m) pthread_mutex_destroy(m)
+    #define mutex_lock(m)    pthread_mutex_lock(m)
+    #define mutex_unlock(m)  pthread_mutex_unlock(m)
+#endif
+
 #endif // PLATFORM_H
